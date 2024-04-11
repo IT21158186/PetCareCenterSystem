@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimePicker from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import authAxios from "../../utils/authAxios";
+import { apiUrl } from "../../utils/Constants";
+import 'react-clock/dist/Clock.css';
 export default function Appointments({ userId }) {
-    const [appointments, setAppointments] = useState([
-        { id: 1, message: "Appointment 1", userID: "user123", status: "pending", date: "2024-04-11", timeSlot: "10:00 AM" },
-        { id: 2, message: "Appointment 2", userID: "user456", status: "approved", date: "2024-04-12", timeSlot: "11:00 AM" }
-    ]);
+    const [appointments, setAppointments] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [timeSlot, setTimeSlot] = useState(null);
 
@@ -25,19 +25,19 @@ export default function Appointments({ userId }) {
         );
     };
 
-    const handleFormSubmit = (event) => {
+    const handleFormSubmit =async (event) => {
         event.preventDefault();
-        setAppointments(prevAppointments => [
-            ...prevAppointments,
-            {
-                id: prevAppointments.length + 1,
+        try {
+            const resp = await authAxios.post(`${apiUrl}/appointment`, {
                 message: event.target.message.value,
-                userID: event.target.userID.value,
-                status: "pending",
                 date: event.target.date.value,
                 timeSlot: event.target.timeSlot.value
-            }
-        ]);
+            })
+            toast.success('Appointment Created')
+            myApps()
+        } catch (error) {
+            console.log(error);
+        }
         setShowForm(false);
     };
 
@@ -45,6 +45,19 @@ export default function Appointments({ userId }) {
         setShowForm(false);
     };
 
+    const myApps = async () => {
+        try {
+            const data = await authAxios.get(`${apiUrl}/appointment/my`)
+            console.log(data.data);
+            setAppointments(data.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        myApps()
+    }, [])
     return (
         <div className="container mx-auto relative">
             <h1 className="text-2xl font-bold mb-4 text-center">Appointments Scheduler</h1>
@@ -56,10 +69,6 @@ export default function Appointments({ userId }) {
                         <button className="absolute top-0 right-0 m-2" onClick={handleClose}>Close</button>
                         <h2 className="text-lg font-semibold mb-4">Make Appointment</h2>
                         <form onSubmit={handleFormSubmit} className="space-y-4">
-                            <div>
-                                <label htmlFor="userID" className="block font-medium">User ID:</label>
-                                <input type="text" id="userID" name="userID" className="border border-gray-400 rounded px-3 py-2 w-full" value={userId} readOnly />
-                            </div>
                             <div>
                                 <label htmlFor="message" className="block font-medium">Message:</label>
                                 <input type="text" id="message" name="message" className="border border-gray-400 rounded px-3 py-2 w-full" placeholder="Enter your message" />
@@ -74,9 +83,6 @@ export default function Appointments({ userId }) {
                                     id="timeSlot"
                                     name="timeSlot"
                                     className="border border-gray-400 rounded px-3 py-2 w-full"
-                                    disableClock={true} // Disable clock input
-                                    clearIcon={null} // Remove clear icon
-                                    clockIcon={null} // Remove clock icon
                                     placeholder="Select time" // Placeholder for time picker
                                     value={timeSlot}
                                     onChange={setTimeSlot}
@@ -108,11 +114,11 @@ export default function Appointments({ userId }) {
                 <tbody style={{ textAlign: 'center' }}>
                     {appointments.map(appointment => (
                         <tr key={appointment.id}>
-                            <td className="border px-4 py-2">{appointment.id}</td>
-                            <td className="border px-4 py-2">{appointment.message}</td>
-                            <td className="border px-4 py-2">{appointment.userID}</td>
-                            <td className="border px-4 py-2">{appointment.date}</td>
-                            <td className="border px-4 py-2">{appointment.timeSlot}</td>
+                            <td className="border px-4 py-2">{appointment?._id}</td>
+                            <td className="border px-4 py-2">{appointment?.message}</td>
+                            <td className="border px-4 py-2">{appointment?.userid?.email}</td>
+                            <td className="border px-4 py-2">{new Date(appointment?.date).toLocaleString()}</td>
+                            <td className="border px-4 py-2">{appointment?.timeSlot}</td>
                             <td className="border px-4 py-2">
                                 <button
                                     className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}

@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 // Declare the Schema of the Mongo model
 var ticketSchema = new mongoose.Schema({
-    message: {
+    subject:{
+        type:String,
+        required: true,
+    },
+    description: {
         type: String,
         required: true,
     },

@@ -15,6 +15,13 @@ var appointmentSchema = new mongoose.Schema({
         type:String,
         default:'pending',
         enum:['pending','resolved']
+    },
+    timeSlot:{
+        type: String,
+        required: true,
+    },
+    date:{
+        type:Date
     }
 },{
     timestamps:true
