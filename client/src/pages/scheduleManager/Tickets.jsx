@@ -87,12 +87,12 @@ export default function Tickets() {
                 <tbody>
                     {tickets.map((ticket,idx) => (
                         <tr key={idx} className="border-b border-gray-300">
-                            <td className="px-4 py-2">{ticket?._id}</td>
-                            <td className="px-4 py-2">{ticket?.userid?.email}</td>
-                            <td className="px-4 py-2">{ticket?.subject}</td>
-                            <td className="px-4 py-2">{ticket?.description}</td>
-                            <td className="px-4 py-2">{ticket?.status}</td>
-                            <td className="px-4 py-2 flex items-center">
+                            <td className="border px-4 py-2">{ticket?._id}</td>
+                            <td className="border px-4 py-2">{ticket?.userid?.email}</td>
+                            <td className="border px-4 py-2">{ticket?.subject}</td>
+                            <td className="border px-4 py-2">{ticket?.description}</td>
+                            <td className="border px-4 py-2">{ticket?.status}</td>
+                            <td className="border px-4 py-2 flex items-center">
                                 {ticket?.status === "pending" && (
                                     <button onClick={() => handleReply(ticket?._id, ticket?.subject)} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Reply
