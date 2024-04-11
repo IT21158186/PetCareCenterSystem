@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 export default function TicketPage() {
     const [open, setOpen] = useState(false);
     const [tickets, setTickets] = useState([]);
+    const [replies, setReplies] = useState([])
 
     const handleOpen = () => {
         setOpen(true);
@@ -41,8 +42,19 @@ export default function TicketPage() {
         }
     }
 
+    const myReplies = async () => {
+        try {
+            const data = await authAxios.get(`${apiUrl}/ticket/my/reply`)
+            console.log(data.data);
+            setReplies(data.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         myTickets()
+        myReplies()
     }, [])
 
     return (
@@ -111,6 +123,27 @@ export default function TicketPage() {
                         ))}
                     </tbody>
                 </table>
+
+                <div className="my-20 border bg-white p-3">
+                    <h1 className="text-center mb-5">Replies for your tickets</h1>
+                    <div>
+                        {
+                            replies?.map((rep) => (
+                                <div className="p-2 border rounded-xl bg-blue-200">
+                                    <div className="flex items-center my-5 px-3 justify-between capitalize">
+                                        <h2 className="text-lg ">Ticket id : <span className="text-xs">{rep.ticketId._id}</span></h2>
+                                        <h2 className="text-lg">{rep.ticketId.subject}</h2>
+
+                                    </div>
+                                    {
+                                        rep.message
+                                    }
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                </div>
             </div>
 
 

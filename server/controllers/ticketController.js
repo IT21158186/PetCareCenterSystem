@@ -79,3 +79,13 @@ export const reply = async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+export const getMyReplies = async(req,res)=>{
+    try {
+        const {userid} = req.body;
+        const app = await ReplyModel.find({userid}).populate('ticketId')
+        res.status(200).json(app)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message})
+    }
+}
