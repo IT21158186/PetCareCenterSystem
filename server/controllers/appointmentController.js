@@ -11,6 +11,17 @@ export const getAllApps = async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+export const getMyApps = async(req,res)=>{
+    try {
+        const {userid} = req.body 
+        console.log(userid);
+        const app = await AppointmentModel.find({userid}).populate('userid');
+        res.status(200).json(app)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message})
+    }
+}
 export const createAppointment = async(req,res)=>{
     try {
         const data = req.body;
