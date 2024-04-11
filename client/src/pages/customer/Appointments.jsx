@@ -117,7 +117,7 @@ export default function Appointments({ userId }) {
                             <td className="border px-4 py-2">{appointment?._id}</td>
                             <td className="border px-4 py-2">{appointment?.message}</td>
                             <td className="border px-4 py-2">{appointment?.userid?.email}</td>
-                            <td className="border px-4 py-2">{new Date(appointment?.date).toLocaleString()}</td>
+                            <td className="border px-4 py-2">{new Date(appointment?.date).toDateString()}</td>
                             <td className="border px-4 py-2">{appointment?.timeSlot}</td>
                             <td className="border px-4 py-2">
                                 <button
