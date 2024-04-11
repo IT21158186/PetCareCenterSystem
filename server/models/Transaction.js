@@ -11,6 +11,16 @@ var transactionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    qty:{
+        type:Number,
+        min:1,
+
+    },
+    productId:{
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true,
+        ref: "Item"
+    },
     userid: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true,

@@ -37,18 +37,30 @@ export const getOneitem = async (req, res) => {
 
 export const buyItem = async (req, res) => {
     try {
-        const { cardId, amount, userid } = req.body;
+        const { cardId, userid, products } = req.body;
+
         const card = await CardModel.findById(cardId);
         if (!card) {
             throw Error('Card not found')
         }
-        if (card.balance < amount) {
-            throw Error('Insufficiant Balance')
+        const totalAmount = products.reduce((acc, p) => acc + p.price * p.qty, 0);
+        console.log(totalAmount);
+        if (card.balance < totalAmount) {
+            throw Error('Insufficient Balance');
         }
-        card.balance = card.balance - amount;
-        await card.save();
-        const tsc = await TransactionModel.create( { cardId, amount, userid })
-        res.status(200).json(tsc)
+
+        for (const product of products) {
+            const { productId, price, qty } = product;
+            const amount = price * qty;
+
+            card.balance -= amount;
+            await card.save();
+
+            const tsc = await TransactionModel.create({ cardId, productId,qty,amount, userid });
+            console.log(`Transaction created for product ${productId}`);
+        }
+
+        res.status(200).json({ message: 'Transactions created successfully' });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message })
