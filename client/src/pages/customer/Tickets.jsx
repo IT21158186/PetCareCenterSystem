@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 export default function TicketPage() {
     const [open, setOpen] = useState(false);
     const [tickets, setTickets] = useState([]);
-    const [replies, setReplies] = useState([])
+    const [replies, setReplies] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleOpen = () => {
         setOpen(true);
@@ -17,9 +18,6 @@ export default function TicketPage() {
     };
 
     const handleSubmit = async (ticketData) => {
-        // Handle form submission to send ticket to schedule manager's email
-        // You can implement this functionality according to your backend logic
-        // For now, let's just close the dialog and add sample data
         try {
             const resp = await authAxios.post(`${apiUrl}/ticket`, ticketData)
             toast.success('Ticket Submitted');
@@ -29,13 +27,11 @@ export default function TicketPage() {
             myTickets()
             handleClose();
         }
-
     };
 
     const myTickets = async () => {
         try {
             const data = await authAxios.get(`${apiUrl}/ticket/my`)
-            console.log(data.data);
             setTickets(data.data)
         } catch (error) {
             console.log(error);
@@ -45,7 +41,6 @@ export default function TicketPage() {
     const myReplies = async () => {
         try {
             const data = await authAxios.get(`${apiUrl}/ticket/my/reply`)
-            console.log(data.data);
             setReplies(data.data)
         } catch (error) {
             console.log(error);
@@ -57,13 +52,31 @@ export default function TicketPage() {
         myReplies()
     }, [])
 
+    // Filter tickets based on search query
+    const filteredTickets = tickets.filter(ticket =>
+        ticket.subject.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <>
-            <div className="flex justify-end mt-10 mr-10">
+            <div className="flex justify-between items-center mt-10 mx-10">
+                {/* Search bar */}
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Search by subject..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                </div>
+                {/* Raise a Ticket button */}
                 <button onClick={handleOpen} className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-4 rounded shadow mb-4">
                     Raise a Ticket
                 </button>
             </div>
+            
+            {/* Ticket submission modal */}
             {open && (
                 <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
                     <div className="bg-white rounded shadow-lg w-96">
@@ -100,7 +113,7 @@ export default function TicketPage() {
                 </div>
             )}
 
-
+            {/* Ticket table */}
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-center font-bold text-2xl">My Tickets</h1>
                 <table className="w-full bg-white rounded-lg shadow-lg mt-4">
@@ -113,7 +126,7 @@ export default function TicketPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {tickets.map((ticket) => (
+                        {filteredTickets.map((ticket) => (
                             <tr key={ticket.id} className="border-b border-gray-300">
                                 <td className="px-4 py-2">{ticket._id}</td>
                                 <td className="px-4 py-2">{ticket.subject}</td>
@@ -123,30 +136,23 @@ export default function TicketPage() {
                         ))}
                     </tbody>
                 </table>
-
-                <div className="my-20 border bg-white p-3">
-                    <h1 className="text-center mb-5">Replies for your tickets</h1>
-                    <div>
-                        {
-                            replies?.map((rep) => (
-                                <div className="p-2 border rounded-xl bg-blue-200">
-                                    <div className="flex items-center my-5 px-3 justify-between capitalize">
-                                        <h2 className="text-lg ">Ticket id : <span className="text-xs">{rep.ticketId._id}</span></h2>
-                                        <h2 className="text-lg">{rep.ticketId.subject}</h2>
-
-                                    </div>
-                                    {
-                                        rep.message
-                                    }
-                                </div>
-                            ))
-                        }
-                    </div>
-
-                </div>
             </div>
 
-
+            {/* Replies for your tickets */}
+            <div className="my-20 border bg-white p-3">
+                <h1 className="text-center mb-5">Replies for your tickets</h1>
+                <div>
+                    {replies.map((rep) => (
+                        <div key={rep.id} className="p-2 border rounded-xl bg-blue-200">
+                            <div className="flex items-center my-5 px-3 justify-between capitalize">
+                                <h2 className="text-lg ">Ticket id : <span className="text-xs">{rep.ticketId._id}</span></h2>
+                                <h2 className="text-lg">{rep.ticketId.subject}</h2>
+                            </div>
+                            {rep.message}
+                        </div>
+                    ))}
+                </div>
+            </div>
         </>
     )
 }

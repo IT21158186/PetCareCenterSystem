@@ -12,7 +12,7 @@ export default function Appointments({ userId }) {
     const [showForm, setShowForm] = useState(false);
     const [timeSlot, setTimeSlot] = useState(null);
 
-    // Function to get today's date in the format YYYY-MM-DD
+    
     function getTodayDate() {
         const today = new Date();
         const year = today.getFullYear();
@@ -21,7 +21,7 @@ export default function Appointments({ userId }) {
         return `${year}-${month}-${day}`;
     }
 
-    // State to store the minimum date (current date)
+   
     const [minDate, setMinDate] = useState(getTodayDate());
 
     const handleStatusClick = (id, status) => {
