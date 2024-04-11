@@ -1,21 +1,21 @@
-import AppointmentModel from "../models/AppointmentModel.js";
+import TicketModel from "../models/TicketModel.js";
 
 
 
-export const getAllApps = async(req,res)=>{
+export const getAllTick = async(req,res)=>{
     try {
-        const app = await AppointmentModel.find().populate('userid');
+        const app = await TicketModel.find().populate('userid');
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
         res.status(500).json({message:error.message})
     }
 }
-export const createAppointment = async(req,res)=>{
+export const createTick = async(req,res)=>{
     try {
         const data = req.body;
 
-        const app = await AppointmentModel.create(data);
+        const app = await TicketModel.create(data);
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
@@ -23,11 +23,11 @@ export const createAppointment = async(req,res)=>{
     }
 }
 
-export const updateAppointment = async(req,res)=>{
+export const updateTick = async(req,res)=>{
     try {
         const {id} = req.params;
         const data = req.body;
-        const app = await AppointmentModel.findByIdAndUpdate(id,data);
+        const app = await TicketModel.findByIdAndUpdate(id,data);
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
@@ -35,10 +35,10 @@ export const updateAppointment = async(req,res)=>{
     }
 }
 
-export const getOneAppt = async(req,res)=>{
+export const getOneTick = async(req,res)=>{
     try {
         const {id} = req.params;
-        const app = await AppointmentModel.findById(id).populate('userid');
+        const app = await TicketModel.findById(id).populate('userid');
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
