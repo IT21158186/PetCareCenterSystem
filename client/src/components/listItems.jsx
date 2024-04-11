@@ -101,7 +101,7 @@ export const scheduleManagerListItems = (
   <Link to={'/appointments'}>
     <ListItemButton>
       <ListItemIcon>
-        <Fastfood />
+        <BookOnlineIcon />
       </ListItemIcon>
       <ListItemText primary="Appointments" />
     </ListItemButton>
@@ -110,7 +110,7 @@ export const scheduleManagerListItems = (
   <Link to={'/tickets'}>
     <ListItemButton>
       <ListItemIcon>
-        <Fastfood />
+        <ChatIcon />
       </ListItemIcon>
       <ListItemText primary="Tickets" />
     </ListItemButton>
