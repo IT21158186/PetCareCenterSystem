@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import userRouter from './routes/userRoutes.js';
 import payRouter from './routes/paymentRoutes.js';
 import itemRouter from './routes/itemRouter.js';
+import appRoutes from './routes/appRoutes.js';
 dotenv.config();
 const PORT = process.env.PORT || 3000
 const app = express();
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 app.use('/', userRouter)
 app.use('/card', payRouter)
 app.use('/item', itemRouter)
+app.use('/appointment', appRoutes)
 
 dbConfig();
 
