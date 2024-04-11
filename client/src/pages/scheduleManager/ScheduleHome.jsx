@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import authAxios from "../../utils/authAxios";
+import { apiUrl } from "../../utils/Constants";
+import axios from "axios";
 
 export default function AppointmentsScheduleHome() {
-    const [appointments, setAppointments] = useState([
-        { id: 1, message: "Appointment 1", userID: "user123", status: "pending", date: "2024-04-11", timeSlot: "10:00 AM" },
-        { id: 2, message: "Appointment 2", userID: "user456", status: "approved", date: "2024-04-12", timeSlot: "11:00 AM" }
-    ]);
+    const [appointments, setAppointments] = useState([]);
     const [showForm, setShowForm] = useState(false);
 
-    const toggleStatus = (id, status) => {
+    const toggleStatus =async (id, status) => {
         if (status === 'approved') {
             toast.error("Approved appointment cannot be set back to pending!", { position: "top-center" });
             return;
         }
-        setAppointments(prevAppointments =>
-            prevAppointments.map(appointment =>
-                appointment.id === id
-                    ? { ...appointment, status: 'approved' }
-                    : appointment
-            )
-        );
+        try {
+            const resp = await axios.put(`${apiUrl}/appointment/${id}`,{status:'approved'})
+            toast.success('Appointment Approved')
+            myApps()
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleFormSubmit = (event) => {
@@ -43,6 +43,20 @@ export default function AppointmentsScheduleHome() {
         setShowForm(false);
     };
 
+    const myApps = async () => {
+        try {
+            const data = await authAxios.get(`${apiUrl}/appointment`)
+            console.log(data.data);
+            setAppointments(data.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        myApps()
+    }, [])
+
     return (
         <div className="container mx-auto relative">
             <h1 className="text-2xl font-bold mb-4 text-center">Appointments Scheduler</h1>
@@ -63,15 +77,15 @@ export default function AppointmentsScheduleHome() {
                 <tbody style={{ textAlign: 'center' }}>
                     {appointments.map(appointment => (
                         <tr key={appointment.id}>
-                            <td className="border px-4 py-2">{appointment.id}</td>
+                            <td className="border px-4 py-2">{appointment._id}</td>
                             <td className="border px-4 py-2">{appointment.message}</td>
-                            <td className="border px-4 py-2">{appointment.userID}</td>
-                            <td className="border px-4 py-2">{appointment.date}</td>
+                            <td className="border px-4 py-2">{appointment?.userid?.email}</td>
+                            <td className="border px-4 py-2">{new Date(appointment.date).toLocaleString()}</td>
                             <td className="border px-4 py-2">{appointment.timeSlot}</td>
                             <td className="border px-4 py-2">
                                 <button
                                     className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
-                                    onClick={() => toggleStatus(appointment.id, appointment.status)}
+                                    onClick={() => toggleStatus(appointment._id, appointment.status)}
                                 >
                                     {appointment.status}
                                 </button>

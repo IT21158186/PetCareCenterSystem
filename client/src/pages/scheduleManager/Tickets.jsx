@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { apiUrl } from "../../utils/Constants";
 
 export default function Tickets() {
-    const [tickets, setTickets] = useState([
-        { id: 1, userId: 123, subject: "Sample Ticket 1", description: "This is a sample description for ticket 1.", status: "pending" },
-        { id: 2, userId: 456, subject: "Sample Ticket 2", description: "This is a sample description for ticket 2.", status: "pending" }
-    ]);
+    const [tickets, setTickets] = useState([]);
     const [replyFormData, setReplyFormData] = useState({
         ticketId: null,
         subject: "",
@@ -14,16 +13,14 @@ export default function Tickets() {
     });
     const [replyFormVisible, setReplyFormVisible] = useState(false);
 
-    const toggleStatus = (id) => {
-        setTickets(tickets.map(ticket => {
-            if (ticket.id === id) {
-                return {
-                    ...ticket,
-                    status: ticket.status === "pending" ? "resolved" : "pending"
-                };
-            }
-            return ticket;
-        }));
+    const toggleStatus =async (id) => {
+        try {
+            const rep = await axios.put(`${apiUrl}/ticket/${id}`,{status:'approved'})
+            toast.success('Ticket Marked As Solved')
+            getAllTickets()
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleReply = (id, subject) => {
@@ -59,8 +56,22 @@ export default function Tickets() {
         });
     };
 
+    const getAllTickets = async () => {
+        try {
+            const resp = await axios.get(`${apiUrl}/ticket`)
+            setTickets(resp.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    useEffect(() => {
+        getAllTickets()
+    }, [])
+
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className=" mx-auto">
             <h1 className="text-center font-bold text-2xl">All the Tickets Received</h1>
             <table className="w-full bg-white rounded-lg shadow-lg mt-4">
                 <thead>
@@ -74,21 +85,23 @@ export default function Tickets() {
                     </tr>
                 </thead>
                 <tbody>
-                    {tickets.map((ticket) => (
-                        <tr key={ticket.id} className="border-b border-gray-300">
-                            <td className="px-4 py-2">{ticket.id}</td>
-                            <td className="px-4 py-2">{ticket.userId}</td>
-                            <td className="px-4 py-2">{ticket.subject}</td>
-                            <td className="px-4 py-2">{ticket.description}</td>
-                            <td className="px-4 py-2">{ticket.status}</td>
-                            <td className="px-4 py-2">
-                                {ticket.status === "pending" && (
-                                    <button onClick={() => handleReply(ticket.id, ticket.subject)} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    {tickets.map((ticket,idx) => (
+                        <tr key={idx} className="border-b border-gray-300">
+                            <td className="px-4 py-2">{ticket?._id}</td>
+                            <td className="px-4 py-2">{ticket?.userid?.email}</td>
+                            <td className="px-4 py-2">{ticket?.subject}</td>
+                            <td className="px-4 py-2">{ticket?.description}</td>
+                            <td className="px-4 py-2">{ticket?.status}</td>
+                            <td className="px-4 py-2 flex items-center">
+                                {ticket?.status === "pending" && (
+                                    <button onClick={() => handleReply(ticket?._id, ticket?.subject)} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Reply
                                     </button>
                                 )}
-                                <button onClick={() => toggleStatus(ticket.id)} className={`bg-${ticket.status === "pending" ? 'green' : 'gray'}-500 hover:bg-${ticket.status === "pending" ? 'green' : 'gray'}-700 text-white font-bold py-2 px-4 rounded`}>
-                                    {ticket.status === "pending" ? "Resolve" : "Resolved"}
+                                <button onClick={() => toggleStatus(ticket?._id)}
+                                    style={{ backgroundColor: ticket?.status === "pending" ? 'green' : 'gray' }}
+                                    className={` hover:bg-${ticket?.status === "pending" ? 'green' : 'gray'}-700 text-white font-bold py-2 px-4 rounded`}>
+                                    {ticket?.status === "pending" ? "Pending" : "Resolved"}
                                 </button>
                             </td>
                         </tr>

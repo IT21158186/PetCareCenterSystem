@@ -37,6 +37,7 @@ export const updateTick = async(req,res)=>{
     try {
         const {id} = req.params;
         const data = req.body;
+        console.log(data);
         const app = await TicketModel.findByIdAndUpdate(id,data);
         res.status(200).json(app)
     } catch (error) {
