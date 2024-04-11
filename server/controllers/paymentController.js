@@ -86,7 +86,7 @@ export const getOneCard = async(req,res)=>{
 export const getAllTransactions = async(req,res)=>{
 try {
     const {userid} = req.body;
-    const resp = await TransactionModel.find({userid})
+    const resp = await TransactionModel.find({userid}).populate('productId')
     res.status(200).json(resp)
 } catch (error) {
     console.log(error);

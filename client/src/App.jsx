@@ -20,7 +20,7 @@ import Appointments from './pages/customer/Appointments';
 export default function App() {
   return (
     <BrowserRouter>
-      <ToastContainer autoClose={1000} />
+      <ToastContainer autoClose={2000} />
       <AuthProvider>
 
         <Routes>
@@ -36,7 +36,7 @@ export default function App() {
             <Route path='' element={<Guest />} />
 
             <Route path='items' element={<StoreItems />} />
-            <Route path='itempage' element={<ItemPage />} />
+            <Route path='itempage/:id' element={<ItemPage />} />
 
 
             {/*Admin Routes */}

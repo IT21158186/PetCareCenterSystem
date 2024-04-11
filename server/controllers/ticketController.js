@@ -11,6 +11,16 @@ export const getAllTick = async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+export const getMyTickets = async(req,res)=>{
+    try {
+        const {userid} = req.body;
+        const app = await TicketModel.find({userid}).populate('userid');
+        res.status(200).json(app)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message})
+    }
+}
 export const createTick = async(req,res)=>{
     try {
         const data = req.body;

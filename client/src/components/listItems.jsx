@@ -73,7 +73,7 @@ export const customerListItems = (
 
 export const guestListItems = (
   <React.Fragment>
-  <Link to={''}>
+  <Link to={'/'}>
     <ListItemButton>
       <ListItemIcon>
         <Home />
