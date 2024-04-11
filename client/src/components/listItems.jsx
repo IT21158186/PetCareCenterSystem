@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Fastfood, Home, LocalBar, ShoppingCart, Store, StoreMallDirectory, Whatshot } from '@material-ui/icons';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import { ManageAccounts, Newspaper, ShoppingBag } from '@mui/icons-material';
+import ChatIcon from '@mui/icons-material/Chat';
 
 export const adminListItems = (
   <React.Fragment>
@@ -28,7 +29,7 @@ export const customerListItems = (
       <ListItemIcon>
         <Home />
       </ListItemIcon>
-      <ListItemText primary="Home" />
+      <ListItemText primary="Items" />
     </ListItemButton>
   </Link>
   
@@ -46,6 +47,14 @@ export const customerListItems = (
         <ShoppingCart />
       </ListItemIcon>
       <ListItemText primary="Cart" />
+    </ListItemButton>
+  </Link>
+  <Link to={'/ticket'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <ChatIcon />
+      </ListItemIcon>
+      <ListItemText primary="Ticket" />
     </ListItemButton>
   </Link>
   

@@ -13,6 +13,7 @@ import StoreItems from './pages/store/Items';
 import ItemPage from './pages/store/ItemPage';
 import Checkout from './pages/customer/Checkout';
 import Orders from './pages/customer/Orders';
+import TicketPage from './pages/customer/Tickets';
 
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
             <Route path='itempage/:id' element={<ItemPage />} />
             <Route path='checkout' element={<Checkout />} />
             <Route path='transactions' element={<Orders />} />
+            <Route path='ticket' element={<TicketPage />} />
 
           </Route>
         </Routes>

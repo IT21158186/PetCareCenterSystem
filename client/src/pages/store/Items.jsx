@@ -25,7 +25,7 @@ export default function Items() {
   return (
     <div>
       <Typography variant="h4" gutterBottom style={{ textAlign: 'center', marginTop: '20px', fontWeight: 'bold', color: '#9ca3af' }}>
-        Latest Items
+        Latest Products
       </Typography>
 
       {/* Container for MediaCard components */}
@@ -39,7 +39,7 @@ export default function Items() {
       </div>
 
       <Typography variant="h4" gutterBottom style={{ textAlign: 'center', marginTop: '20px', fontWeight: 'bold', color: '#9ca3af' }}>
-        Electronic
+        Pet Foods
       </Typography>
 
       {/* Container for MediaCard components */}

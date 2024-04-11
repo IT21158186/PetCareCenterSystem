@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { apiUrl } from '../../utils/Constants';
-// import { Button } from 'react-bootstrap';
 
 export default function ItemPage() {
     const { userRole, addItemToCart } = useAuth();
@@ -47,9 +46,6 @@ export default function ItemPage() {
         })
     }, [targetCurrency])
 
-    // useEffect(() => {
-    //     calculatePrice();
-    // }, [targetCurrency]);
 
     const handleCurrencyChange = (event) => {
         const currency = event.target.value;
@@ -99,10 +95,7 @@ export default function ItemPage() {
                                 <option key={currency} value={currency}>{currency}</option>
                             ))}
                         </select>
-                        {/* <div class="flex-1">
-                            <p class="text-green-500 text-xl font-semibold">Save 12%</p>
-                            <p class="text-gray-400 text-sm">Inclusive of all Taxes.</p>
-                        </div> */}
+                       
                     </div>
 
                     <p className="text-gray-500">{item?.desc}</p>
