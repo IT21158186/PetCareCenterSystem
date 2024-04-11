@@ -6,10 +6,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import authAxios from "../../utils/authAxios";
 import { apiUrl } from "../../utils/Constants";
 import 'react-clock/dist/Clock.css';
+
 export default function Appointments({ userId }) {
     const [appointments, setAppointments] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [timeSlot, setTimeSlot] = useState(null);
+
+    // Function to get today's date in the format YYYY-MM-DD
+    function getTodayDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // State to store the minimum date (current date)
+    const [minDate, setMinDate] = useState(getTodayDate());
 
     const handleStatusClick = (id, status) => {
         if (status === 'approved') {
@@ -25,7 +38,7 @@ export default function Appointments({ userId }) {
         );
     };
 
-    const handleFormSubmit =async (event) => {
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
             const resp = await authAxios.post(`${apiUrl}/appointment`, {
@@ -58,6 +71,7 @@ export default function Appointments({ userId }) {
     useEffect(() => {
         myApps()
     }, [])
+
     return (
         <div className="container mx-auto relative">
             <h1 className="text-2xl font-bold mb-4 text-center">Appointments Scheduler</h1>
@@ -75,7 +89,14 @@ export default function Appointments({ userId }) {
                             </div>
                             <div>
                                 <label htmlFor="date" className="block font-medium">Date:</label>
-                                <input type="date" id="date" name="date" className="border border-gray-400 rounded px-3 py-2 w-full" placeholder="Select date" />
+                                <input
+                                    type="date"
+                                    id="date"
+                                    name="date"
+                                    className="border border-gray-400 rounded px-3 py-2 w-full"
+                                    placeholder="Select date"
+                                    min={minDate} // Set the minimum date dynamically
+                                />
                             </div>
                             <div>
                                 <label htmlFor="timeSlot" className="block font-medium">Time Slot:</label>
@@ -98,7 +119,6 @@ export default function Appointments({ userId }) {
                     </div>
                 </div>
             )}
-
 
             <table className="table-auto w-full mt-10">
                 <thead className="bg-pink-100">
@@ -136,4 +156,3 @@ export default function Appointments({ userId }) {
         </div>
     );
 }
-
