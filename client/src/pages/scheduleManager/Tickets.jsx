@@ -71,11 +71,11 @@ export default function Tickets() {
     }, [])
 
     return (
-        <div className=" mx-auto">
-            <h1 className="text-center font-bold text-2xl">All the Tickets Received</h1>
-            <table className="w-full bg-white rounded-lg shadow-lg mt-4">
-                <thead>
-                    <tr className="text-left border-b-2 border-gray-300 bg-gray-100">
+        <div className="container mx-auto relative">
+            <h1 className="text-2xl font-bold mb-4 text-center">All the Tickets Received</h1>
+            <table className="table-auto w-full mt-10">
+                <thead className="bg-pink-100">
+                    <tr>
                         <th className="px-4 py-2">ID</th>
                         <th className="px-4 py-2">User ID</th>
                         <th className="px-4 py-2">Subject</th>
@@ -125,7 +125,7 @@ export default function Tickets() {
                     </div>
                 </div>
             )}
-            <ToastContainer />
+            <ToastContainer position="top-center" />
         </div>
     );
 }
