@@ -20,7 +20,7 @@ import authAxios from '../../utils/authAxios';
 import { apiUrl } from '../../utils/Constants';
 import { useAuth } from './AuthContext';
 import { toast } from 'react-toastify';
-import { adminListItems, guestListItems, customerListItems } from '../../components/listItems';
+import { adminListItems, guestListItems, customerListItems, scheduleManagerListItems } from '../../components/listItems';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
@@ -144,7 +144,15 @@ export default function Dashboard() {
         console.log('Setting nav links to ' + userRole);
         setNavlinks(customerListItems);
         if (userAPI != null) {
-          setuserAPI('/items')
+          setuserAPI('/schedule')
+          setAuth(true);
+        }
+        break;
+      case "scheduleManager"://schedule manager
+        console.log('Setting nav links to ' + userRole);
+        setNavlinks(scheduleManagerListItems);
+        if (userAPI != null) {
+          setuserAPI('/appointments')
           setAuth(true);
         }
         break;
@@ -206,7 +214,8 @@ export default function Dashboard() {
               {userRole === 'admin' ? 'Admin Dashboard' :
                 userRole === 'customer' ? 'Customer Dashboard' :
                   userRole === 'guest' ? 'Guest Dashboard' :
-                    'Online Store'}
+                  userRole === 'scheduleManager' ? 'Schedule Dashboard' :
+                    'PetPulse'}
             </Typography>
 
             {auth ? (

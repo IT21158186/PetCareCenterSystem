@@ -31,7 +31,7 @@ export default function Orders() {
       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
       <button onClick={() => toPDF()}>Download PDF</button>
       <div ref={targetRef}>
-      <h2 className='text-center my-5'>My Transactions</h2>
+      <h1 className="text-center font-bold text-2xl">My Transactions</h1>
         <table className="min-w-full leading-normal w-full" >
 
           

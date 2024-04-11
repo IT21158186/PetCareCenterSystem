@@ -92,3 +92,29 @@ export const guestListItems = (
   
   </React.Fragment>
 );
+
+
+export const scheduleManagerListItems = (
+  <React.Fragment>
+  
+
+  <Link to={'/appointments'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <Fastfood />
+      </ListItemIcon>
+      <ListItemText primary="Appointments" />
+    </ListItemButton>
+  </Link>
+
+  <Link to={'/tickets'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <Fastfood />
+      </ListItemIcon>
+      <ListItemText primary="Tickets" />
+    </ListItemButton>
+  </Link>
+  
+  </React.Fragment>
+);

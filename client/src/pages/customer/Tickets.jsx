@@ -89,28 +89,31 @@ export default function TicketPage() {
             )}
 
 
-            <div className="max-w-4xl mx-auto">
-                <table className="w-full bg-white rounded-lg shadow-lg mt-4">
-                    <thead>
-                        <tr className="text-left border-b-2 border-gray-300 bg-gray-100">
-                            <th className="px-4 py-2">ID</th>
-                            <th className="px-4 py-2">Subject</th>
-                            <th className="px-4 py-2">Description</th>
+<div className="max-w-4xl mx-auto">
+    <h1 className="text-center font-bold text-2xl">My Tickets</h1>
+    <table className="w-full bg-white rounded-lg shadow-lg mt-4">
+        <thead>
+            <tr className="text-left border-b-2 border-gray-300 bg-gray-100">
+                <th className="px-4 py-2">ID</th>
+                <th className="px-4 py-2">Subject</th>
+                <th className="px-4 py-2">Description</th>
                             <th className="px-4 py-2">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tickets.map((ticket) => (
-                            <tr key={ticket.id} className="border-b border-gray-300">
-                                <td className="px-4 py-2">{ticket._id}</td>
-                                <td className="px-4 py-2">{ticket.subject}</td>
-                                <td className="px-4 py-2">{ticket.description}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {tickets.map((ticket) => (
+                <tr key={ticket.id} className="border-b border-gray-300">
+                    <td className="px-4 py-2">{ticket._id}</td>
+                    <td className="px-4 py-2">{ticket.subject}</td>
+                    <td className="px-4 py-2">{ticket.description}</td>
                                 <td className="px-4 py-2">{ticket.status}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
+
         </>
     )
 }

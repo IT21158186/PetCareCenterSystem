@@ -15,6 +15,8 @@ import Checkout from './pages/customer/Checkout';
 import Orders from './pages/customer/Orders';
 import TicketPage from './pages/customer/Tickets';
 import Appointments from './pages/customer/Appointments';
+import AppointmentsScheduleHome from './pages/scheduleManager/ScheduleHome';
+import Tickets from './pages/scheduleManager/Tickets';
 
 
 export default function App() {
@@ -43,6 +45,11 @@ export default function App() {
             <Route path='home' element={<Home />} />
             <Route path='admin' element={<Home />} />
 
+            {/*Schedule Manager Routes */}
+            <Route path='appointments' element={<AppointmentsScheduleHome />} />
+            <Route path='tickets' element={<Tickets />} />
+            
+
 
 
             {/*Customer Routes */}
@@ -53,6 +60,9 @@ export default function App() {
             <Route path='transactions' element={<Orders />} />
             <Route path='ticket' element={<TicketPage />} />
             <Route path='appointment' element={<Appointments />} />
+
+
+
 
           </Route>
         </Routes>
