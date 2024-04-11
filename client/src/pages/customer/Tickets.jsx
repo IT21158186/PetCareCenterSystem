@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import authAxios from "../../utils/authAxios";
 import { apiUrl } from "../../utils/Constants";
 import { toast } from "react-toastify";
+import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
 
 export default function TicketPage() {
     const [open, setOpen] = useState(false);
@@ -57,6 +59,21 @@ export default function TicketPage() {
         ticket.subject.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleExportPDF = () => {
+        const doc = new jsPDF();
+        let y = 15;
+        doc.text("My Tickets", 10, y);
+        y += 10;
+        filteredTickets.forEach(ticket => {
+            doc.text(`ID: ${ticket._id}`, 10, y);
+            doc.text(`Subject: ${ticket.subject}`, 10, y + 5);
+            doc.text(`Description: ${ticket.description}`, 10, y + 10);
+            doc.text(`Status: ${ticket.status}`, 10, y + 15);
+            y += 25;
+        });
+        doc.save("my_tickets.pdf");
+    };
+
     return (
         <>
             <div className="flex justify-between items-center mt-10 mx-10">
@@ -74,41 +91,17 @@ export default function TicketPage() {
                 <button onClick={handleOpen} className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-4 rounded shadow mb-4">
                     Raise a Ticket
                 </button>
+                {/* Export PDF button */}
+                <button onClick={handleExportPDF} className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded shadow mb-4">
+                    Export PDF
+                </button>
             </div>
             
             {/* Ticket submission modal */}
             {open && (
                 <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
                     <div className="bg-white rounded shadow-lg w-96">
-                        <div className="flex justify-end">
-                            <button onClick={handleClose} className="p-2 focus:outline-none">
-                                <svg className="h-6 w-6 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div className="p-8">
-                            <h2 className="text-lg font-bold mb-5">Raise a Ticket</h2>
-                            <div className="mb-6">
-                                <label className="block text-gray-700 font-bold mb-2" htmlFor="ticketSubject">Subject</label>
-                                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="ticketSubject" type="text" />
-                            </div>
-                            <div className="mb-6">
-                                <label className="block text-gray-700 font-bold mb-2" htmlFor="ticketDescription">Description</label>
-                                <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="ticketDescription" rows="4"></textarea>
-                            </div>
-                            <div className="flex justify-between">
-                                <button onClick={handleClose} className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    Cancel
-                                </button>
-                                <button onClick={() => handleSubmit({
-                                    subject: document.getElementById('ticketSubject').value,
-                                    description: document.getElementById('ticketDescription').value
-                                })} className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
+                        {/* Modal content */}
                     </div>
                 </div>
             )}
