@@ -89,3 +89,14 @@ export const getMyReplies = async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+
+export const deleteTicket = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await TicketModel.findByIdAndDelete(id);
+        res.status(200).json({ message: "Ticket deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};

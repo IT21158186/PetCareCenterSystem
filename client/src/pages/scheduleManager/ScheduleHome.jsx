@@ -24,6 +24,19 @@ export default function AppointmentsScheduleHome() {
         }
     };
 
+    const handleDelete = async (id) => {
+        console.log("Deleting appointment with ID:", id);
+        try {
+            await axios.delete(`${apiUrl}/${id}`);
+            toast.success('Appointment Deleted');
+            myApps();
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to delete appointment');
+        }
+    };
+    
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
         setAppointments(prevAppointments => [
@@ -88,6 +101,7 @@ export default function AppointmentsScheduleHome() {
                     <th className="px-4 py-2">Date</th>
                     <th className="px-4 py-2">Time Slot</th>
                     <th className="px-4 py-2">Status</th>
+                    <th className="px-4 py-2">Actions</th> {/* Add this */}
                 </tr>
                 </thead>
                 <tbody style={{ textAlign: 'center' }}>
@@ -104,6 +118,14 @@ export default function AppointmentsScheduleHome() {
                                 onClick={() => toggleStatus(appointment._id, appointment.status)}
                             >
                                 {appointment.status}
+                            </button>
+                        </td>
+                        <td className="border px-4 py-2">
+                            <button
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                onClick={() => handleDelete(appointment._id)}
+                            >
+                                Delete
                             </button>
                         </td>
                     </tr>

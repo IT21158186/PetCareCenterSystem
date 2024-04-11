@@ -21,10 +21,10 @@ export const Carasoul = (props) => {
     }, []);
     var items = [
         {
-            src: "https://img.freepik.com/free-vector/black-friday-sale-with-realistic-3d-paper-page_1361-3675.jpg"
+            src: "https://static.vecteezy.com/system/resources/previews/002/283/582/original/super-sale-special-offer-with-discount-liquid-trendy-wallpaper-blue-background-illustration-vector.jpg"
         },
         {
-            src: "https://img.freepik.com/free-vector/black-friday-abstract-sale-with-memphis-style_1361-4014.jpg"
+            src: "https://www.shutterstock.com/shutterstock/videos/1103070287/thumb/9.jpg?ip=x480"
         }
     ]
 
