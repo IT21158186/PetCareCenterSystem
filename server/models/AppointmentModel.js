@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Declare the Schema of the Mongo model
-var appoitSchema = new mongoose.Schema({
+var appointmentSchema = new mongoose.Schema({
     message: {
         type: String,
         required: true,
@@ -21,5 +21,5 @@ var appoitSchema = new mongoose.Schema({
 });
 
 //Export the model
-const AppoitmentModel = mongoose.model('appoitments', appoitSchema);
-export default AppoitmentModel
+const AppointmentModel = mongoose.model('appointments', appointmentSchema);
+export default AppointmentModel

@@ -1,10 +1,10 @@
-import AppoitmentModel from "../models/AppoitmentModel";
+import AppointmentModel from "../models/AppointmentModel.js";
 
 
 
 export const getAllApps = async(req,res)=>{
     try {
-        const app = await AppoitmentModel.find();
+        const app = await AppointmentModel.find();
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
@@ -15,7 +15,7 @@ export const createAppointment = async(req,res)=>{
     try {
         const data = req.body;
 
-        const app = await AppoitmentModel.create(data);
+        const app = await AppointmentModel.create(data);
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
@@ -27,7 +27,7 @@ export const updateAppointment = async(req,res)=>{
     try {
         const {id} = req.params;
         const data = req.body;
-        const app = await AppoitmentModel.findByIdAndUpdate(id,data);
+        const app = await AppointmentModel.findByIdAndUpdate(id,data);
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
@@ -38,7 +38,7 @@ export const updateAppointment = async(req,res)=>{
 export const getOneAppt = async(req,res)=>{
     try {
         const {id} = req.params;
-        const app = await AppoitmentModel.findById(id);
+        const app = await AppointmentModel.findById(id);
         res.status(200).json(app)
     } catch (error) {
         console.log(error);

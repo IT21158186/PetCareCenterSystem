@@ -8,6 +8,7 @@ import { Fastfood, Home, LocalBar, ShoppingCart, Store, StoreMallDirectory, What
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import { ManageAccounts, Newspaper, ShoppingBag } from '@mui/icons-material';
 import ChatIcon from '@mui/icons-material/Chat';
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
 
 export const adminListItems = (
   <React.Fragment>
@@ -55,6 +56,14 @@ export const customerListItems = (
         <ChatIcon />
       </ListItemIcon>
       <ListItemText primary="Ticket" />
+    </ListItemButton>
+  </Link>
+  <Link to={'/appointment'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <BookOnlineIcon />
+      </ListItemIcon>
+      <ListItemText primary="Appointments" />
     </ListItemButton>
   </Link>
   

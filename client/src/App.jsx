@@ -14,6 +14,7 @@ import ItemPage from './pages/store/ItemPage';
 import Checkout from './pages/customer/Checkout';
 import Orders from './pages/customer/Orders';
 import TicketPage from './pages/customer/Tickets';
+import Appointments from './pages/customer/Appointments';
 
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
             <Route path='checkout' element={<Checkout />} />
             <Route path='transactions' element={<Orders />} />
             <Route path='ticket' element={<TicketPage />} />
+            <Route path='appointment' element={<Appointments />} />
 
           </Route>
         </Routes>
