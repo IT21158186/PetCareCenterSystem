@@ -79,3 +79,27 @@ export const changeStatusOfOrder = async( req,res)=>{
         res.status(500).json({ message: error.message })
     }
 }
+
+export const getOverview = async(req,res)=>{
+    try {
+        const totalPendingOrders = await TransactionModel.countDocuments({status:'pending'})
+        const totalApprovedOrders = await TransactionModel.countDocuments({status:'approved'})
+        const totalRejectedOrders = await TransactionModel.countDocuments({status:'rejected'})
+
+        const totSales = await TransactionModel.find({status:'approved'});
+        const totPen = await TransactionModel.find({status:'pending'});
+        const totalSaleAmount = totSales.reduce((acc, p) => acc + p.amount, 0);
+        const pendingAmount = totPen.reduce((acc, p) => acc + p.amount, 0);
+
+        res.status(200).json({
+            totalApprovedOrders,
+            totalPendingOrders,
+            totalRejectedOrders,
+            totalSaleAmount,
+            pendingAmount
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message })
+    }
+}

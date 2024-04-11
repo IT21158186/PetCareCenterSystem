@@ -8,7 +8,7 @@ var transactionSchema = new mongoose.Schema({
         ref: "Card"
     },
     amount: {
-        type: String,
+        type: Number,
         required: true,
     },
     qty:{
