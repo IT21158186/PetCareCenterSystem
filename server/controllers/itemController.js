@@ -66,3 +66,16 @@ export const buyItem = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+export const changeStatusOfOrder = async( req,res)=>{
+    try {
+        const { id } = req.params;
+        console.log(req.query);
+        const {status} = req.query || 'paid';
+        const order = await TransactionModel.findByIdAndUpdate(id,{status},{new:true});
+        res.status(200).json(order)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message })
+    }
+}

@@ -1,6 +1,6 @@
 import express from 'express'
 import { loginValidator } from '../middlewares/loginValidator.js';
-import { buyItem, createItem, getAllItems, getOneitem } from '../controllers/itemController.js';
+import { buyItem, changeStatusOfOrder, createItem, getAllItems, getOneitem } from '../controllers/itemController.js';
 const itemRouter = express.Router();
 
 itemRouter.get('/',getAllItems)
@@ -8,6 +8,7 @@ itemRouter.get('/:id',getOneitem)
 
 itemRouter.post('/', createItem)
 itemRouter.put('/buy',loginValidator, buyItem);
+itemRouter.put('/order/status/:id',loginValidator, changeStatusOfOrder);
 
 
 

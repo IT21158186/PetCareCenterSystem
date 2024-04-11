@@ -26,6 +26,11 @@ var transactionSchema = new mongoose.Schema({
         required: true,
         ref: "users"
     },
+    status:{
+        type:String,
+        default:'paid',
+        enum:['paid','delivered','completed']
+    }
 },{
     timestamps:true
 });
