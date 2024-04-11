@@ -7,7 +7,7 @@ export const saveCardDetails = async(req,res)=>{
         const data = req.body;
 
         if(!data.cardNumber || !data.expYear, !data.expMonth || !data.cvv || !data.name|| !data.email){
-            throw Error('required fields are missing cardNumber , expYear, expMonth, cvv , name')
+            throw Error('required fields are missing cardNumber , expYear, expMonth, cvv , name , email')
         }
         if(data.cardNumber.length < 16){
             throw Error('Card number should 16 digits')

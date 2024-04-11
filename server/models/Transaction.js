@@ -28,8 +28,8 @@ var transactionSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        default:'paid',
-        enum:['paid','delivered','completed']
+        default:'pending',
+        enum:['pending','approved','completed','rejected']
     }
 },{
     timestamps:true
