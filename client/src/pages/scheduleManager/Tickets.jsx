@@ -8,8 +8,9 @@ export default function Tickets() {
     const [tickets, setTickets] = useState([]);
     const [replyFormData, setReplyFormData] = useState({
         ticketId: null,
+        userid:null,
         subject: "",
-        reply: ""
+        message: ""
     });
     const [replyFormVisible, setReplyFormVisible] = useState(false);
 
@@ -23,12 +24,8 @@ export default function Tickets() {
         }
     };
 
-    const handleReply = (id, subject) => {
-        setReplyFormData({
-            ticketId: id,
-            subject,
-            reply: ""
-        });
+    const handleReply = (tick) => {
+        setReplyFormData(tick);
         setReplyFormVisible(true);
     };
 
@@ -36,13 +33,15 @@ export default function Tickets() {
         setReplyFormVisible(false);
     };
 
-    const handleSendReply = () => {
-        if (replyFormData.reply.trim() === "") {
+    const handleSendReply =async () => {
+        if (replyFormData.message.trim() === "") {
             toast.error("Please enter a reply before sending.");
         } else {
-            // Handle sending reply logic here
-            console.log(`Reply sent for ticket with ID ${replyFormData.ticketId}: ${replyFormData.reply}`);
-            toggleStatus(replyFormData.ticketId); // Change ticket status to resolved
+            const resp = await axios.post(`${apiUrl}/ticket/reply/${replyFormData._id}`,{
+                userid:replyFormData.userid,
+                message:replyFormData.message
+            });
+            toggleStatus(replyFormData._id); // Change ticket status to resolved
             setReplyFormVisible(false);
             toast.success("Reply sent successfully.");
         }
@@ -94,7 +93,7 @@ export default function Tickets() {
                             <td className="border px-4 py-2">{ticket?.status}</td>
                             <td className="border px-4 py-2 flex items-center">
                                 {ticket?.status === "pending" && (
-                                    <button onClick={() => handleReply(ticket?._id, ticket?.subject)} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    <button onClick={() => handleReply(ticket)} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Reply
                                     </button>
                                 )}
@@ -112,8 +111,8 @@ export default function Tickets() {
             {replyFormVisible && (
                 <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white rounded-lg p-8">
-                        <h2 className="text-xl font-bold mb-4">Reply to Ticket #{replyFormData.ticketId} - {replyFormData.subject}</h2>
-                        <textarea name="reply" value={replyFormData.reply} onChange={handleReplyChange} className="w-full h-32 border border-gray-300 rounded-lg p-2 mb-4" placeholder="Enter your reply here..." />
+                        <h2 className="text-xl font-bold mb-4">Reply to Ticket #{replyFormData._id} - {replyFormData.subject}</h2>
+                        <textarea name="message" value={replyFormData.message} onChange={handleReplyChange} className="w-full h-32 border border-gray-300 rounded-lg p-2 mb-4" placeholder="Enter your reply here..." />
                         <div className="flex justify-end">
                             <button onClick={handleCancelReply} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 mr-2 rounded">
                                 Cancel

@@ -1,3 +1,4 @@
+import ReplyModel from "../models/Reply.js";
 import TicketModel from "../models/TicketModel.js";
 
 
@@ -50,6 +51,28 @@ export const getOneTick = async(req,res)=>{
     try {
         const {id} = req.params;
         const app = await TicketModel.findById(id).populate('userid');
+        res.status(200).json(app)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message})
+    }
+}
+
+export const reply = async(req,res)=>{
+    try {
+        const {ticketId} = req.params;
+        const data = req.body;
+        if(!ticketId){
+            throw Error('Ticket id is required')
+        }
+        if(!data.message){
+            throw Error('Message required')
+        }
+        if(!data.userid){
+            throw Error('User Id Required')
+        }
+
+        const app = await ReplyModel.create({...data,ticketId})
         res.status(200).json(app)
     } catch (error) {
         console.log(error);
