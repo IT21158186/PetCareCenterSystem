@@ -19,8 +19,13 @@ export default function TicketPage() {
         setOpen(false);
     };
 
-    const handleSubmit = async (ticketData) => {
+    const handleSubmit = async (event) => {
+        event.preventDefault()
         try {
+            const ticketData = {
+                subject: event.target.message.value,
+                description: event.target.desc.value
+            }
             const resp = await authAxios.post(`${apiUrl}/ticket`, ticketData)
             toast.success('Ticket Submitted');
         } catch (error) {
@@ -100,9 +105,17 @@ export default function TicketPage() {
             {/* Ticket submission modal */}
             {open && (
                 <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
-                    <div className="bg-white rounded shadow-lg w-96">
+                    <form className="bg-white rounded shadow-lg w-96  p-10" onSubmit={handleSubmit}>
                         {/* Modal content */}
-                    </div>
+                        <h2>Raise a ticket</h2>
+                        <input type="text" name="message" placeholder="Title" className="p-2 border my-2 w-full" />
+                        <input type="text" name="desc" placeholder="description" className="p-2 border my-2 w-full" />
+
+                        <div className="flex items-center justify-between">
+                            <button className="p-2 border bg-green-300" >Submit</button>
+                            <button className="p-2 border bg-red-300" type="button" onClick={()=>setOpen(false)}>Cancel</button>
+                        </div>
+                    </form>
                 </div>
             )}
 

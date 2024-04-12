@@ -12,8 +12,10 @@ export default function Appointments({ userId }) {
     const [appointments, setAppointments] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [timeSlot, setTimeSlot] = useState(null);
+    const [showUpdate, setShowUpdate] = useState(false)
+    const [selectedApp, setSelectedApp] = useState({})
 
-    
+
     function getTodayDate() {
         const today = new Date();
         const year = today.getFullYear();
@@ -22,12 +24,12 @@ export default function Appointments({ userId }) {
         return `${year}-${month}-${day}`;
     }
 
-   
+
     const [minDate, setMinDate] = useState(getTodayDate());
 
-    const handleStatusClick =async (id, status) => {
+    const handleStatusClick = async (id, status) => {
         try {
-            const resp = await axios.put(`${apiUrl}/appointment/${id}`,{status})
+            const resp = await axios.put(`${apiUrl}/appointment/${id}`, { status })
             toast.warning('Appointment Cancelled')
             myApps()
         } catch (error) {
@@ -35,13 +37,36 @@ export default function Appointments({ userId }) {
         }
     };
 
+    const handleUpdate = async (event) => {
+        try {
+            const data = {
+                message: event.target.message.value,
+                date: event.target.date.value,
+                timeSlot: event.target.timeSlot.value,
+                type: event.target.type.value
+            }
+            const resp = await axios.put(`${apiUrl}/appointment/${id}`, data)
+            toast.warning('Appointment Updated')
+            setShowUpdate(false)
+            myApps()
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleShowUpdate = (a) => {
+        setSelectedApp(a)
+        setShowUpdate(true)
+    }
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
             const resp = await authAxios.post(`${apiUrl}/appointment`, {
                 message: event.target.message.value,
                 date: event.target.date.value,
-                timeSlot: event.target.timeSlot.value
+                timeSlot: event.target.timeSlot.value,
+                type: event.target.type.value
             })
             toast.success('Appointment Created')
             myApps()
@@ -106,6 +131,13 @@ export default function Appointments({ userId }) {
                                     onChange={setTimeSlot}
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="date" className="block font-medium">Appointment Type:</label>
+                                <select name="type" id="type" className="w-full p-2 border">
+                                    <option value="sergeory">sergeory</option>
+                                    <option value="checkup">checkup</option>
+                                </select>
+                            </div>
                             <div className="flex justify-end">
                                 <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded mr-2">Submit</button>
                                 <button onClick={handleClose} className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -122,6 +154,7 @@ export default function Appointments({ userId }) {
                     <tr>
                         <th className="px-4 py-2">ID</th>
                         <th className="px-4 py-2">Message</th>
+                        <th className="px-4 py-2">Appointment Type</th>
                         <th className="px-4 py-2">UserID</th>
                         <th className="px-4 py-2">Date</th>
                         <th className="px-4 py-2">Time Slot</th>
@@ -134,30 +167,87 @@ export default function Appointments({ userId }) {
                         <tr key={appointment.id}>
                             <td className="border px-4 py-2">{appointment?._id}</td>
                             <td className="border px-4 py-2">{appointment?.message}</td>
+                            <td className="border px-4 py-2">{appointment?.type}</td>
                             <td className="border px-4 py-2">{appointment?.userid?.email}</td>
                             <td className="border px-4 py-2">{new Date(appointment?.date).toDateString()}</td>
                             <td className="border px-4 py-2">{appointment?.timeSlot}</td>
                             <td className="border px-4 py-2">
                                 <button
-                                    className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : appointment.status === 'cancelled' ? 'bg-amber-500 text-white':'bg-green-500 text-white'}`}
+                                    className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : appointment.status === 'cancelled' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'}`}
                                     onClick={() => handleStatusClick(appointment._id, appointment.status)}
                                     disabled={appointment.status === 'approved' || appointment.status === 'pending'}
                                 >
                                     {appointment.status}
                                 </button>
                             </td>
-                            <td className="border px-4 py-2">
+                            <td className="border px-4 py-2 flex items-center gap-2">
                                 <button
                                     className={`px-2 py-1 rounded bg-red-500 text-white'`}
                                     onClick={() => handleStatusClick(appointment._id, 'cancelled')}
                                 >
-                                   Cancel
+                                    Cancel
+                                </button>
+                                <button
+                                    className={`px-2 py-1 rounded border-red-500 border-2 text-white'`}
+                                    onClick={() => handleShowUpdate(appointment)}
+                                >
+                                    Edit
                                 </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {
+                showUpdate && <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+                        <button className="absolute top-0 right-0 m-2" onClick={handleClose}>Close</button>
+                        <h2 className="text-lg font-semibold mb-4">Update Appointment</h2>
+                        <form onSubmit={handleUpdate} className="space-y-4">
+                            <div>
+                                <label htmlFor="message" className="block font-medium">Message:</label>
+                                <input type="text" id="message" name="message" value={selectedApp.message} className="border border-gray-400 rounded px-3 py-2 w-full" placeholder="Enter your message" />
+                            </div>
+                            <div>
+                                <label htmlFor="date" className="block font-medium">Date:</label>
+                                <input
+                                    type="date"
+                                    id="date"
+                                    name="date"
+                                    value={selectedApp?.date}
+                                    className="border border-gray-400 rounded px-3 py-2 w-full"
+                                    placeholder="Select date"
+                                    min={minDate} // Set the minimum date dynamically
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="timeSlot" className="block font-medium">Time Slot:</label>
+                                <TimePicker
+                                    id="timeSlot"
+                                    name="timeSlot"
+                                    className="border border-gray-400 rounded px-3 py-2 w-full"
+                                    placeholder="Select time" // Placeholder for time picker
+                                    value={selectedApp.timeSlot}
+                                    onChange={setTimeSlot}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="date" className="block font-medium">Appointment Type:</label>
+                                <select name="type" id="type" className="w-full p-2 border" value={selectedApp.type}>
+                                    <option value="sergeory">sergeory</option>
+                                    <option value="checkup">checkup</option>
+                                </select>
+                            </div>
+                            <div className="flex justify-end">
+                                <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded mr-2">Submit</button>
+                                <button onClick={()=>setShowUpdate(false)} type="button" className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
             <ToastContainer position="top-center" />
         </div>
     );

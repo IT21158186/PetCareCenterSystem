@@ -20,6 +20,10 @@ var appointmentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    type:{
+        type:String,
+        default:'sergeory'
+    },
     date:{
         type:Date
     }
