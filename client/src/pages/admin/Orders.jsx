@@ -4,7 +4,7 @@ import { apiUrl } from '../../utils/Constants';
 import authAxios from '../../utils/authAxios';
 import { usePDF } from 'react-to-pdf';
 import { toast } from 'react-toastify';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, TextField } from '@mui/material';
 
 export default function AdminOrders() {
   const [transactions, setTransactions] = useState([]);
@@ -32,9 +32,11 @@ export default function AdminOrders() {
 
   const updateTransaction = async () => {
     try {
-      const response = await authAxios.get(`${apiUrl}/card/transactions/order/${selectedTr._id}`, selectedTr)
+      const response = await authAxios.put(`${apiUrl}/card/order/${selectedTr._id}`, selectedTr)
       console.log(response.data);
       toast.success('Order Updated')
+      setUpdateModal(false)
+      getAllTransactions()
     } catch (error) {
       console.error('Error fetching transactions:', error);
       // Handle error
@@ -63,7 +65,13 @@ export default function AdminOrders() {
     setDeleteModal(true)
   }
 
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelTR(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   return (
     <div className="bg-white p-8 rounded-md w-full">
@@ -133,14 +141,103 @@ export default function AdminOrders() {
         </div>
       </div>
       {/* Delete Confirmation Dialog */}
-      <Dialog open={deleteModal} onClose={()=>setDeleteModal(false)}>
+      <Dialog open={deleteModal} onClose={() => setDeleteModal(false)}>
         <DialogTitle>Delete Payment Details</DialogTitle>
         <DialogContent>
           Are you sure you want to delete the Order?
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setDeleteModal(false)} color="primary">No</Button>
+          <Button onClick={() => setDeleteModal(false)} color="primary">No</Button>
           <Button color="secondary" onClick={deleteTr}>Yes</Button>
+        </DialogActions>
+      </Dialog>
+
+
+      {/* Update Payment Details Dialog */}
+      <Dialog open={updateModal} onClose={() => setUpdateModal(false)}>
+        <DialogTitle>Update Order Details</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="ID"
+            label="Order ID"
+            type="text"
+            fullWidth
+            name="ID"
+            value={selectedTr?._id || ''}
+            onChange={handleInputChange}
+            disabled
+          />
+          <TextField
+            margin="dense"
+            id="product"
+            label="Product"
+            type="text"
+            fullWidth
+            name="product"
+            value={selectedTr?.productId?.title || ''}
+            disabled
+          />
+          <TextField
+            margin="dense"
+            id="qty"
+            label="Quantity"
+            type="text"
+            fullWidth
+            name="qty"
+            value={selectedTr?.qty || ''}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            id="createdAt"
+            label="Order Placed Date"
+            type="text"
+            fullWidth
+            name="expYear"
+            value={selectedTr?.createdAt || ''}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            id="shippingAddress"
+            label="Shipping Address"
+            type="text"
+            fullWidth
+            name="shippingAddress"
+            value={selectedTr?.userid?.shippingAddress || ''}
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            id="email"
+            label="cardType"
+            type="text"
+            fullWidth
+            name="cardType"
+            value={selectedTr?.userid?.email || ''}
+            onChange={handleInputChange}
+          />
+          <p>Status</p>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name='status'
+            value={selectedTr?.status}
+            onChange={handleInputChange}
+            className='w-full'
+            label="Status"
+          >
+            <MenuItem value="pending">pending</MenuItem>
+            <MenuItem value="approved">approved</MenuItem>
+            <MenuItem value="completed">completed</MenuItem>
+            <MenuItem value="rejected">rejected</MenuItem>
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setUpdateModal(false)} color="primary">Cancel</Button>
+          <Button onClick={updateTransaction} color="primary">Save</Button>
         </DialogActions>
       </Dialog>
     </div>
