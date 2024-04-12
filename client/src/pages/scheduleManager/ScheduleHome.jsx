@@ -80,10 +80,10 @@ export default function AppointmentsScheduleHome() {
         <div className="container mx-auto relative">
             <h1 className="text-2xl font-bold mb-4 text-center">Appointments Scheduler</h1>
             <div className="flex justify-between items-center mb-4">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => setShowForm(true)}>
                     Make Appointment
-                </button>
+                </button> */}
                 <input
                     type="text"
                     placeholder="Search by message..."
