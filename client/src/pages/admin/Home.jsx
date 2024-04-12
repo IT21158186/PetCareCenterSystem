@@ -48,6 +48,11 @@ const Home = () => {
           <p className='px-0 pt-4'>{overview?.pendingAmount}</p>
         </div>
         <div className='w-max border shadow-xl p-5 rounded-xl'>
+          <p className='font-bold'>Total Sales</p>
+          <hr />
+          <p className='px-0 pt-4'>{overview?.totalSaleAmount}</p>
+        </div>
+        <div className='w-max border shadow-xl p-5 rounded-xl'>
           <p className='font-bold'>Approved Orders</p>
           <hr />
           <p className='px-0 pt-4'>{overview?.totalApprovedOrders}</p>
