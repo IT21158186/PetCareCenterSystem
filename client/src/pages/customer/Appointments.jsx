@@ -38,14 +38,15 @@ export default function Appointments({ userId }) {
     };
 
     const handleUpdate = async (event) => {
+        event.preventDefault()
         try {
             const data = {
                 message: event.target.message.value,
-                date: event.target.date.value,
+                // date: event.target.date.value,
                 timeSlot: event.target.timeSlot.value,
                 type: event.target.type.value
             }
-            const resp = await axios.put(`${apiUrl}/appointment/${id}`, data)
+            const resp = await axios.put(`${apiUrl}/appointment/${selectedApp._id}`, data)
             toast.warning('Appointment Updated')
             setShowUpdate(false)
             myApps()
@@ -93,6 +94,13 @@ export default function Appointments({ userId }) {
     useEffect(() => {
         myApps()
     }, [])
+
+    const handleUpdateChange = (e)=>{
+        setSelectedApp((prev)=>({
+            ...prev,
+            [e.target.name]: e.target.value
+        }))
+    }
 
     return (
         <div className="container mx-auto relative">
@@ -206,20 +214,21 @@ export default function Appointments({ userId }) {
                         <form onSubmit={handleUpdate} className="space-y-4">
                             <div>
                                 <label htmlFor="message" className="block font-medium">Message:</label>
-                                <input type="text" id="message" name="message" value={selectedApp.message} className="border border-gray-400 rounded px-3 py-2 w-full" placeholder="Enter your message" />
+                                <input type="text" id="message" onChange={handleUpdateChange} name="message" value={selectedApp.message} className="border border-gray-400 rounded px-3 py-2 w-full" placeholder="Enter your message" />
                             </div>
-                            <div>
+                            {/* <div>
                                 <label htmlFor="date" className="block font-medium">Date:</label>
                                 <input
                                     type="date"
                                     id="date"
                                     name="date"
-                                    value={selectedApp?.date}
+                                    defaultValue={ Date(selectedApp?.date)}
+                                    value={ Date(selectedApp?.date)}
                                     className="border border-gray-400 rounded px-3 py-2 w-full"
                                     placeholder="Select date"
                                     min={minDate} // Set the minimum date dynamically
                                 />
-                            </div>
+                            </div> */}
                             <div>
                                 <label htmlFor="timeSlot" className="block font-medium">Time Slot:</label>
                                 <TimePicker
@@ -228,12 +237,12 @@ export default function Appointments({ userId }) {
                                     className="border border-gray-400 rounded px-3 py-2 w-full"
                                     placeholder="Select time" // Placeholder for time picker
                                     value={selectedApp.timeSlot}
-                                    onChange={setTimeSlot}
+                                    onChange={handleUpdateChange}
                                 />
                             </div>
                             <div>
                                 <label htmlFor="date" className="block font-medium">Appointment Type:</label>
-                                <select name="type" id="type" className="w-full p-2 border" value={selectedApp.type}>
+                                <select name="type" id="type" className="w-full p-2 border" value={selectedApp.type} onChange={handleUpdateChange}>
                                     <option value="sergeory">sergeory</option>
                                     <option value="checkup">checkup</option>
                                 </select>
