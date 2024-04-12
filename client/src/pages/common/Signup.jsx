@@ -26,6 +26,7 @@ const Signup = () => {
             firstName: data.get('firstName'),
             lastName: data.get('lastName'),
             role: 'customer',
+            shippingAddress:  data.get('address')
         };
         console.log(payload);
         try {
@@ -113,6 +114,16 @@ const Signup = () => {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="address"
+                                    label="Shipping Address"
+                                    name="address"
+                                    autoComplete="address"
                                 />
                             </Grid>
                             <Grid item xs={12}>
