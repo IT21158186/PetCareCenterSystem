@@ -94,7 +94,7 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <Link to={{ pathname: "/checkout", state: total }} state={total}>
+                <Link to={{ pathname: "/checkout", state: cart }} state={cart}>
                   <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
                     Check out
                   </button>

@@ -50,14 +50,14 @@ export const buyItem = async (req, res) => {
         }
 
         for (const product of products) {
-            const { productId, price, qty } = product;
+            const { _id, price, qty } = product;
             const amount = price * qty;
 
             card.balance -= amount;
             await card.save();
 
-            const tsc = await TransactionModel.create({ cardId, productId,qty,amount, userid });
-            console.log(`Transaction created for product ${productId}`);
+            const tsc = await TransactionModel.create({ cardId, productId : _id,qty,amount, userid });
+            console.log(`Transaction created for product ${_id}`);
         }
 
         res.status(200).json({ message: 'Transactions created successfully' });

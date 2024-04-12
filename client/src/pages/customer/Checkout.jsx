@@ -22,9 +22,13 @@ export default function Checkout() {
     yen: 151.61
   });
   const [targetCurrency, setTargetCurrency] = useState('usd');
+  const cart = location.state
+
 
   // Access state values
-  const total = location.state;
+  const total = cart.reduce((total, item) => {
+    return total + (item.price * item.qty);
+  }, 0);
 
   const getSavedCardDetails = async () => {
     try {
@@ -78,8 +82,10 @@ export default function Checkout() {
       if (buttonText === 'Place Order') {
         const data = {
           cardId: card?._id,
-          amount: total
+          amount: total,
+          products:cart
         }
+        console.log(data);
         const resp = await authAxios.put(`${apiUrl}/item/buy`, data);
         toast.success('Order is placed')
       } else {
