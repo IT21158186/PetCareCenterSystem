@@ -27,7 +27,7 @@ export default function AppointmentsScheduleHome() {
     const handleDelete = async (id) => {
         console.log("Deleting appointment with ID:", id);
         try {
-            await axios.delete(`${apiUrl}/${id}`);
+            await axios.delete(`${apiUrl}/appointment/${id}`);
             toast.success('Appointment Deleted');
             myApps();
         } catch (error) {
