@@ -51,9 +51,16 @@ const PaymentTable = ({ cards }) => {
 
     };
 
-    const handleUpdateConfirmed = () => {
+    const handleUpdateConfirmed =async () => {
         // Here you can implement the logic to update the payment details
-        console.log('Updated card details:', updatedCard);
+        console.log('Updating card with ID:', selectedCard._id);
+        try {
+            const resp = await axios.put(`${apiUrl}/card/${selectedCard._id}`, updatedCard)
+            toast.warning('Updated')
+            window.location.reload()
+        } catch (error) {
+            console.log(error);
+        }
         setUpdateDialogOpen(false);
     };
 
