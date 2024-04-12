@@ -8,6 +8,7 @@ import axios from 'axios';
 
 export default function Checkout() {
   const [selectedCurrency, setSelectedCurrency] = useState('LKR');
+  const [amount, setAmount] = useState(0)
   const [card, setCard] = useState({
     name: "",
   });
@@ -111,6 +112,15 @@ export default function Checkout() {
     ))
     console.log(card);
   }
+
+  const rechargeCard =async ()=>{
+    try {
+      const resp = await axios.put(`${apiUrl}/card/${card._id}`,{balance:amount})
+      toast.success(`Balance Changed to ${amount}`)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="relative mx-auto w-full bg-white">
       <div className="grid min-h-screen grid-cols-10">
@@ -207,6 +217,8 @@ export default function Checkout() {
               {buttonText}
             </button>
 
+              <input type="number"value={amount} onChange={e=>setAmount(e.target.value)}/>
+              <button className='my-10 p-2 bg-green-200' type='button' onClick={rechargeCard}>Recharge Card</button>
           </div>
         </div>
         <div className="relative col-span-full flex flex-col py-6 pl-8 pr-4 sm:py-12 lg:col-span-4 lg:py-24 bg-blue-300">
