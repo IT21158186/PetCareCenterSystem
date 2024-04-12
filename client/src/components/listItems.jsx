@@ -12,12 +12,21 @@ import BookOnlineIcon from '@mui/icons-material/BookOnline';
 
 export const adminListItems = (
   <React.Fragment>
-    <Link to={'/admin/home'}>
+    <Link to={'/admin'}>
       <ListItemButton>
         <ListItemIcon>
           <Home />
         </ListItemIcon>
         <ListItemText primary="Home" />
+      </ListItemButton>
+    </Link>
+
+    <Link to={'/admin/orders'}>
+      <ListItemButton>
+        <ListItemIcon>
+          <LocalBar />
+        </ListItemIcon>
+        <ListItemText primary="Orders" />
       </ListItemButton>
     </Link>
   </React.Fragment>

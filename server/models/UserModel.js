@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
     },
+    shippingAddress:{
+        type:String,
+        default:'Not Given'
+    },
     role:{
         type:String,
         required:true,

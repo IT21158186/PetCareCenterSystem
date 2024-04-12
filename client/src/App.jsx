@@ -17,6 +17,7 @@ import TicketPage from './pages/customer/Tickets';
 import Appointments from './pages/customer/Appointments';
 import AppointmentsScheduleHome from './pages/scheduleManager/ScheduleHome';
 import Tickets from './pages/scheduleManager/Tickets';
+import AdminOrders from './pages/admin/Orders';
 
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
             {/*Admin Routes */}
             <Route path='home' element={<Home />} />
             <Route path='admin' element={<Home />} />
+            <Route path='admin/orders' element={<AdminOrders />} />
 
             {/*Schedule Manager Routes */}
             <Route path='appointments' element={<AppointmentsScheduleHome />} />
