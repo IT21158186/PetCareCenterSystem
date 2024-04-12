@@ -119,12 +119,12 @@ export default function TicketPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredTickets.map((ticket) => (
+                        {filteredTickets?.map((ticket) => (
                             <tr key={ticket.id} className="border-b border-gray-300">
-                                <td className="px-4 py-2">{ticket._id}</td>
-                                <td className="px-4 py-2">{ticket.subject}</td>
-                                <td className="px-4 py-2">{ticket.description}</td>
-                                <td className="px-4 py-2">{ticket.status}</td>
+                                <td className="px-4 py-2">{ticket?._id}</td>
+                                <td className="px-4 py-2">{ticket?.subject}</td>
+                                <td className="px-4 py-2">{ticket?.description}</td>
+                                <td className="px-4 py-2">{ticket?.status}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -135,13 +135,13 @@ export default function TicketPage() {
             <div className="my-20 border bg-white p-3">
                 <h1 className="text-center mb-5">Replies for your tickets</h1>
                 <div>
-                    {replies.map((rep) => (
-                        <div key={rep.id} className="p-2 border rounded-xl bg-blue-200">
+                    {replies?.map((rep) => (
+                        <div key={rep?._id} className="p-2 border rounded-xl bg-blue-200">
                             <div className="flex items-center my-5 px-3 justify-between capitalize">
-                                <h2 className="text-lg ">Ticket id : <span className="text-xs">{rep.ticketId._id}</span></h2>
-                                <h2 className="text-lg">{rep.ticketId.subject}</h2>
+                                <h2 className="text-lg ">Ticket id : <span className="text-xs">{rep?.ticketId?._id}</span></h2>
+                                <h2 className="text-lg">{rep?.ticketId?.subject}</h2>
                             </div>
-                            {rep.message}
+                            {rep?.message}
                         </div>
                     ))}
                 </div>
