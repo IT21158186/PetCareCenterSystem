@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import authAxios from "../../utils/authAxios";
 import { apiUrl } from "../../utils/Constants";
 import 'react-clock/dist/Clock.css';
+import axios from "axios";
 
 export default function Appointments({ userId }) {
     const [appointments, setAppointments] = useState([]);
@@ -24,18 +25,14 @@ export default function Appointments({ userId }) {
    
     const [minDate, setMinDate] = useState(getTodayDate());
 
-    const handleStatusClick = (id, status) => {
-        if (status === 'approved') {
-            toast.error("This appointment is already approved!", { position: "top-center" });
-            return;
+    const handleStatusClick =async (id, status) => {
+        try {
+            const resp = await axios.put(`${apiUrl}/appointment/${id}`,{status})
+            toast.warning('Appointment Cancelled')
+            myApps()
+        } catch (error) {
+            console.log(error);
         }
-        setAppointments(prevAppointments =>
-            prevAppointments.map(appointment =>
-                appointment.id === id
-                    ? { ...appointment, status: 'approved' }
-                    : appointment
-            )
-        );
     };
 
     const handleFormSubmit = async (event) => {
@@ -129,10 +126,11 @@ export default function Appointments({ userId }) {
                         <th className="px-4 py-2">Date</th>
                         <th className="px-4 py-2">Time Slot</th>
                         <th className="px-4 py-2">Status</th>
+                        <th className="px-4 py-2">Action</th>
                     </tr>
                 </thead>
                 <tbody style={{ textAlign: 'center' }}>
-                    {appointments.map(appointment => (
+                    {appointments?.map(appointment => (
                         <tr key={appointment.id}>
                             <td className="border px-4 py-2">{appointment?._id}</td>
                             <td className="border px-4 py-2">{appointment?.message}</td>
@@ -141,11 +139,19 @@ export default function Appointments({ userId }) {
                             <td className="border px-4 py-2">{appointment?.timeSlot}</td>
                             <td className="border px-4 py-2">
                                 <button
-                                    className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
-                                    onClick={() => handleStatusClick(appointment.id, appointment.status)}
+                                    className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : appointment.status === 'cancelled' ? 'bg-amber-500 text-white':'bg-green-500 text-white'}`}
+                                    onClick={() => handleStatusClick(appointment._id, appointment.status)}
                                     disabled={appointment.status === 'approved' || appointment.status === 'pending'}
                                 >
-                                    {appointment.status === 'approved' ? 'Approved' : 'Pending'}
+                                    {appointment.status}
+                                </button>
+                            </td>
+                            <td className="border px-4 py-2">
+                                <button
+                                    className={`px-2 py-1 rounded bg-red-500 text-white'`}
+                                    onClick={() => handleStatusClick(appointment._id, 'cancelled')}
+                                >
+                                   Cancel
                                 </button>
                             </td>
                         </tr>

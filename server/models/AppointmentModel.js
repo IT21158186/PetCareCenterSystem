@@ -14,7 +14,7 @@ var appointmentSchema = new mongoose.Schema({
     status:{
         type:String,
         default:'pending',
-        enum:['pending','approved']
+        enum:['pending','approved','cancelled']
     },
     timeSlot:{
         type: String,
