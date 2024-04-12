@@ -58,7 +58,7 @@ const Home = () => {
           <p className='px-0 pt-4'>{overview?.totalPendingOrders}</p>
         </div>
         <div className='w-max border shadow-xl p-5 rounded-xl'>
-          <p className='font-bold'>Rjected Orders</p>
+          <p className='font-bold'>Rejected Orders</p>
           <hr />
           <p className='px-0 pt-4'>{overview?.totalRejectedOrders}</p>
         </div>

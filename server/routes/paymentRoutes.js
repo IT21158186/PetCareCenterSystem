@@ -1,6 +1,6 @@
 import express from 'express'
 import { loginValidator } from '../middlewares/loginValidator.js';
-import { deleteCardDetails, getAllCards, getAllTheTransactions, getAllTransactions, getCardDetails, getOneCard, saveCardDetails, updateCardDetails, updateTransaction } from '../controllers/paymentController.js';
+import { deleteCardDetails, deleteTransaction, getAllCards, getAllTheTransactions, getAllTransactions, getCardDetails, getOneCard, saveCardDetails, updateCardDetails, updateTransaction } from '../controllers/paymentController.js';
 const payRouter = express.Router();
 
 payRouter.get('/', loginValidator,getCardDetails)
@@ -14,6 +14,7 @@ payRouter.post('/save',loginValidator, saveCardDetails)
 payRouter.put('/:id', updateCardDetails);
 payRouter.put('/order/:id', updateTransaction);
 payRouter.delete('/:id', deleteCardDetails)
+payRouter.delete('/order/:id', deleteTransaction)
 
 
 

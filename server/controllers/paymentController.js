@@ -114,3 +114,14 @@ export const updateTransaction = async (req, res) => {
         res.status(500), json({ message: error.message })
     }
 }
+
+export const deleteTransaction = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const resp = await TransactionModel.findByIdAndDelete(id)
+        res.status(200).json(resp)
+    } catch (error) {
+        console.log(error);
+        res.status(500), json({ message: error.message })
+    }
+}
