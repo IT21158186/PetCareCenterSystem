@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         required:true,
-        enum:['customer','admin','scheduleManager']
+        enum:['customer','admin','scheduleManager', 'customerservicemanager']
     },
 },{timestamps:true})
 

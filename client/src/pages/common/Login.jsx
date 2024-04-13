@@ -50,6 +50,10 @@ export default function Login() {
             toast.success('Login Success as the Schedule Manager!');
             navigate('/appointments');
             break;
+            case 'customerservicemanager':
+            toast.success('Login Success as the Customer Service Manager!');
+            navigate('/tickets');
+            break;
          
         }
         window.location.reload();

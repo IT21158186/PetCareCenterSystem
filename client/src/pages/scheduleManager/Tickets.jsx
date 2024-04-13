@@ -9,15 +9,16 @@ export default function Tickets() {
     const [tickets, setTickets] = useState([]);
     const [replyFormData, setReplyFormData] = useState({
         ticketId: null,
-        userid:null,
+        userid: null,
+        type: "",
         subject: "",
         message: ""
     });
     const [replyFormVisible, setReplyFormVisible] = useState(false);
 
-    const toggleStatus =async (id) => {
+    const toggleStatus = async (id) => {
         try {
-            const rep = await axios.put(`${apiUrl}/ticket/${id}`,{status:'approved'})
+            const rep = await axios.put(`${apiUrl}/ticket/${id}`, { status: 'approved' })
             toast.success('Ticket Marked As Solved')
             getAllTickets()
         } catch (error) {
@@ -34,13 +35,13 @@ export default function Tickets() {
         setReplyFormVisible(false);
     };
 
-    const handleSendReply =async () => {
+    const handleSendReply = async () => {
         if (replyFormData.message.trim() === "") {
             toast.error("Please enter a reply before sending.");
         } else {
-            const resp = await axios.post(`${apiUrl}/ticket/reply/${replyFormData._id}`,{
-                userid:replyFormData.userid,
-                message:replyFormData.message
+            const resp = await axios.post(`${apiUrl}/ticket/reply/${replyFormData._id}`, {
+                userid: replyFormData.userid,
+                message: replyFormData.message
             });
             toggleStatus(replyFormData._id); // Change ticket status to resolved
             setReplyFormVisible(false);
@@ -65,49 +66,66 @@ export default function Tickets() {
         }
     }
 
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`${apiUrl}/ticket/${id}`);
+            toast.success('Ticket deleted successfully.');
+            getAllTickets();
+        } catch (error) {
+            console.error('Error deleting ticket:', error);
+        }
+    };
 
     useEffect(() => {
         getAllTickets()
     }, [])
 
+
+
+
     return (
         <div className="container mx-auto relative">
             <h1 className="text-2xl font-bold mb-4 text-center">All the Tickets Received</h1>
             <table className="table-auto w-full mt-10">
-                <thead className="bg-pink-100">
-                    <tr>
-                        <th className="px-4 py-2">ID</th>
-                        <th className="px-4 py-2">User ID</th>
-                        <th className="px-4 py-2">Subject</th>
-                        <th className="px-4 py-2">Description</th>
-                        <th className="px-4 py-2">Status</th>
-                        <th className="px-4 py-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tickets.map((ticket,idx) => (
-                        <tr key={idx} className="border-b border-gray-300">
-                            <td className="border px-4 py-2">{ticket?._id}</td>
-                            <td className="border px-4 py-2">{ticket?.userid?.email}</td>
-                            <td className="border px-4 py-2">{ticket?.subject}</td>
-                            <td className="border px-4 py-2">{ticket?.description}</td>
-                            <td className="border px-4 py-2">{ticket?.status}</td>
-                            <td className="border px-4 py-2 flex items-center">
-                                {ticket?.status === "pending" && (
-                                    <button onClick={() => handleReply(ticket)} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        Reply
-                                    </button>
-                                )}
-                                <button onClick={() => toggleStatus(ticket?._id)}
-                                    style={{ backgroundColor: ticket?.status === "pending" ? 'green' : 'gray' }}
-                                    className={` hover:bg-${ticket?.status === "pending" ? 'green' : 'gray'}-700 text-white font-bold py-2 px-4 rounded`}>
-                                    {ticket?.status === "pending" ? "Pending" : "Resolved"}
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+    <thead className="bg-pink-100">
+        <tr>
+            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">User ID</th>
+            <th className="px-4 py-2">Ticket Type</th>
+            <th className="px-4 py-2">Subject</th>
+            <th className="px-4 py-2">Description</th>
+            <th className="px-4 py-2">Status</th>
+            <th className="px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {tickets.map((ticket, idx) => (
+            <tr key={idx} className="border-b border-gray-300">
+                <td className="border px-4 py-2">{ticket?._id}</td>
+                <td className="border px-4 py-2">{ticket?.userid?.email}</td>
+                <td className="border px-4 py-2">{ticket?.type}</td>
+                <td className="border px-4 py-2">{ticket?.subject}</td>
+                <td className="border px-4 py-2">{ticket?.description}</td>
+                <td className="border px-4 py-2">{ticket?.status}</td>
+                <td className="border px-4 py-2 flex items-center space-x-2">
+                    {ticket?.status === "pending" && (
+                        <button onClick={() => handleReply(ticket)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Reply
+                        </button>
+                    )}
+                    <button onClick={() => toggleStatus(ticket?._id)}
+                        className={`bg-${ticket?.status === "pending" ? 'green' : 'gray'}-500 hover:bg-${ticket?.status === "pending" ? 'green' : 'gray'}-700 text-white font-bold py-2 px-4 rounded`}>
+                        {ticket?.status === "pending" ? "Pending" : "Resolved"}
+                    </button>
+                    <button onClick={() => handleDelete(ticket._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        ))}
+    </tbody>
+</table>
+
 
             {replyFormVisible && (
                 <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center">

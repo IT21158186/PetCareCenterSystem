@@ -9,6 +9,7 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import { ManageAccounts, Newspaper, ShoppingBag } from '@mui/icons-material';
 import ChatIcon from '@mui/icons-material/Chat';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
+import ViewListIcon from '@mui/icons-material/ViewList';
 
 export const adminListItems = (
   <React.Fragment>
@@ -37,7 +38,7 @@ export const customerListItems = (
   <Link to={'/items'}>
     <ListItemButton>
       <ListItemIcon>
-        <Home />
+        <ViewListIcon />
       </ListItemIcon>
       <ListItemText primary="Items" />
     </ListItemButton>
@@ -90,15 +91,7 @@ export const guestListItems = (
       <ListItemText primary="Home" />
     </ListItemButton>
   </Link>
-  <Link to={'/items'}>
-    <ListItemButton>
-      <ListItemIcon>
-        <Fastfood />
-      </ListItemIcon>
-      <ListItemText primary="Items" />
-    </ListItemButton>
-  </Link>
-  
+
   </React.Fragment>
 );
 
@@ -115,6 +108,22 @@ export const scheduleManagerListItems = (
       <ListItemText primary="Appointments" />
     </ListItemButton>
   </Link>
+
+  {/* <Link to={'/tickets'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <ChatIcon />
+      </ListItemIcon>
+      <ListItemText primary="Tickets" />
+    </ListItemButton>
+  </Link> */}
+  
+  </React.Fragment>
+);
+
+export const customerServiceManagerListItems = (
+  <React.Fragment>
+  
 
   <Link to={'/tickets'}>
     <ListItemButton>

@@ -19,6 +19,11 @@ var ticketSchema = new mongoose.Schema({
         type:String,
         default:'pending',
         enum:['pending','resolved']
+    },
+    type: {
+        type: String,
+        default: 'Other',
+        enum: ['Payment', 'Appointment', 'Nutritional Issues', 'Customer Service', 'Healthcare', 'Other']
     }
 },{
     timestamps:true

@@ -16,13 +16,8 @@ export default function Checkout() {
   const [buttonText, setBtnText] = useState('Save Card')
   const [price, setPrice] = useState(0.0);
   const navigate = useNavigate()
-  const [rates, setRates] = useState({
-    usd: 1,
-    lkr: 250.5,
-    inr: 83.2,
-    yen: 151.61
-  });
-  const [targetCurrency, setTargetCurrency] = useState('usd');
+  const [rates, setRates] = useState({ lkr: 1});
+  const [targetCurrency, setTargetCurrency] = useState('lkr');
   const cart = location.state
 
 
@@ -189,7 +184,7 @@ export default function Checkout() {
               <div className="mt-4 flex justify-between items-center">
                 <p className="text-sm font-semibold text-gray-500">Total Price:</p>
                 <div className="flex items-center">
-                  <select
+                  {/* <select
                     value={targetCurrency}
                     onChange={handleCurrencyChange}
                     className="px-3 py-1 border rounded-md outline-none"
@@ -199,17 +194,17 @@ export default function Checkout() {
                         {currency}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
                   <span className="ml-2">
-                    USD {total}
+                    LKR {total}
                   </span>
                 </div>
               </div>
-              {(
+              {/* {(
                 <p className="text-sm font-semibold text-gray-500">
                   Converted Price: {targetCurrency} {price.toFixed(2)}
                 </p>
-              )}
+              )} */}
 
             </form>
             <p className="mt-10 text-center text-sm font-semibold text-gray-500">By placing this order you agree to the <a href="#" className="whitespace-nowrap text-teal-400 underline hover:text-teal-600">Terms and Conditions</a></p>
@@ -232,7 +227,7 @@ export default function Checkout() {
 
             <div className="my-5 h-0.5 w-full bg-white bg-opacity-30"></div>
             <div className="space-y-2">
-              <p className="flex justify-between text-lg font-bold text-white"><span>Total price:</span><span>USD. {total}</span></p>
+              <p className="flex justify-between text-lg font-bold text-white"><span>Total price:</span><span>LKR. {total}</span></p>
             </div>
           </div>
         </div>

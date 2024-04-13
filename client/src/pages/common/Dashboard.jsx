@@ -20,7 +20,7 @@ import authAxios from '../../utils/authAxios';
 import { apiUrl } from '../../utils/Constants';
 import { useAuth } from './AuthContext';
 import { toast } from 'react-toastify';
-import { adminListItems, guestListItems, customerListItems, scheduleManagerListItems } from '../../components/listItems';
+import { adminListItems, guestListItems, customerListItems, scheduleManagerListItems, customerServiceManagerListItems } from '../../components/listItems';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
@@ -156,6 +156,14 @@ export default function Dashboard() {
           setAuth(true);
         }
         break;
+        case "customerservicemanager"://Customer Service Manager
+        console.log('Setting nav links to ' + userRole);
+        setNavlinks(customerServiceManagerListItems);
+        if (userAPI != null) {
+          setuserAPI('/tickets')
+          setAuth(true);
+        }
+        break;
       default://guests
         setNavlinks(guestListItems)
         navigate("/");
@@ -186,7 +194,7 @@ export default function Dashboard() {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open} sx={{ bgcolor: '#703068' }}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -214,7 +222,8 @@ export default function Dashboard() {
               {userRole === 'admin' ? 'Admin Dashboard' :
                 userRole === 'customer' ? 'Customer Dashboard' :
                   userRole === 'guest' ? 'Guest Dashboard' :
-                  userRole === 'scheduleManager' ? 'Schedule Dashboard' :
+                    userRole === 'scheduleManager' ? 'Schedule Dashboard' :
+                      userRole === 'customerservicemanager' ? 'Customer Service Manager Dashboard' :
                     'PetPulse'}
             </Typography>
 
@@ -263,7 +272,7 @@ export default function Dashboard() {
           </Menu>
         </AppBar>
 
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} sx={{ bgcolor: '#073068' }}>
           <Toolbar
             sx={{
               display: 'flex',
