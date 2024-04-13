@@ -9,14 +9,9 @@ export default function ItemPage() {
     const { userRole, addItemToCart } = useAuth();
     const { id } = useParams()
     const [item, setItem] = useState({})
-    const [rates, setRates] = useState({
-        usd: 1,
-        lkr: 250.5,
-        inr: 83.2,
-        yen: 151.61
-    });
+    const [rates, setRates] = useState({ lkr: 1});
 
-    const [targetCurrency, setTargetCurrency] = useState('usd');
+    const [targetCurrency, setTargetCurrency] = useState('lkr');
     const [rateM, setRateM] = useState(1.0);
     const [price, setPrice] = useState(0.0);
 
@@ -90,11 +85,11 @@ export default function ItemPage() {
                                 }
                             </div>
                         </div>
-                        <select value={targetCurrency} onChange={handleCurrencyChange}>
+                        {/* <select value={targetCurrency} onChange={handleCurrencyChange}>
                             {Object.keys(rates).map(currency => (
                                 <option key={currency} value={currency}>{currency}</option>
                             ))}
-                        </select>
+                        </select> */}
                        
                     </div>
 
