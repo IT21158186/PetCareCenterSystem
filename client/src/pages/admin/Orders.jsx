@@ -45,15 +45,18 @@ export default function AdminOrders() {
 
   const deleteTr = async () => {
     try {
-      const response = await authAxios.delete(`${apiUrl}/card/order/${selectedTr._id}`)
+      const response = await authAxios.delete(`${apiUrl}/card/order/${selectedTr._id}`);
       console.log(response.data);
-      toast.warning('Order Deleted')
-      getAllTransactions()
+      toast.warning('Order Deleted');
+      // Close the confirmation popup
+      closePopup();
+      // Reload the page
+      window.location.reload();
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      console.error('Error deleting transaction:', error);
       // Handle error
     }
-  }
+  };
 
   const handleUpdateDialogOpen = (t) => {
     setSelTR(t)

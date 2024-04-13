@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import authAxios from "../../utils/authAxios";
 import { apiUrl } from "../../utils/Constants";
 import axios from "axios";
+import jsPDF from 'jspdf';
 
 export default function AppointmentsScheduleHome() {
     const [appointments, setAppointments] = useState([]);
@@ -35,7 +36,54 @@ export default function AppointmentsScheduleHome() {
             toast.error('Failed to delete appointment');
         }
     };
+
+
+    const downloadPDF = () => {
+        // Create jsPDF instance
+        const pdf = new jsPDF('p', 'pt', 'letter');
     
+        // Define columns for the PDF table
+        const columns = ['ID', 'Message', 'UserID', 'Date', 'Time Slot', 'Status'];
+        const rows = [];
+    
+        // Extract data from appointments state
+        appointments.forEach(appointment => {
+            const rowData = [
+                appointment._id,
+                appointment.message,
+                appointment?.userid?.email,
+                new Date(appointment.date).toLocaleString(),
+                appointment.timeSlot,
+                appointment.status
+            ];
+            rows.push(rowData);
+        });
+    
+        const headerText = "Appointments Scheduler";
+        const headerFontSize = 16;
+        const headerMargin = 20; // Adjust as needed
+    
+        pdf.setFontSize(headerFontSize);
+        const headerTextWidth = pdf.getStringUnitWidth(headerText) * headerFontSize / pdf.internal.scaleFactor;
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const headerX = (pageWidth - headerTextWidth) / 2;
+        pdf.text(headerText, headerX, headerMargin);
+    
+        const tableStartY = headerMargin + headerFontSize + 10; // Adjust as needed
+    
+        pdf.autoTable({
+            startY: tableStartY, // Adjust startY value to leave space for the heading
+            head: [columns],
+            body: rows,
+        });
+    
+        // Save PDF
+        pdf.save('appointments_schedule.pdf');
+    };
+    
+    
+
+
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
@@ -92,47 +140,55 @@ export default function AppointmentsScheduleHome() {
                     onChange={e => setSearchQuery(e.target.value)}
                 />
             </div>
+            <div className="container mx-auto relative" id="table-container"></div>
             <table className="table-auto w-full mt-10">
                 <thead className="bg-pink-100">
-                <tr>
-                    <th className="px-4 py-2">ID</th>
-                    <th className="px-4 py-2">Message</th>
-                    <th className="px-4 py-2">UserID</th>
-                    <th className="px-4 py-2">Date</th>
-                    <th className="px-4 py-2">Time Slot</th>
-                    <th className="px-4 py-2">Status</th>
-                    <th className="px-4 py-2">Actions</th> {/* Add this */}
-                </tr>
+                    <tr>
+                        <th className="px-4 py-2">ID</th>
+                        <th className="px-4 py-2">Message</th>
+                        <th className="px-4 py-2">UserID</th>
+                        <th className="px-4 py-2">Date</th>
+                        <th className="px-4 py-2">Time Slot</th>
+                        <th className="px-4 py-2">Status</th>
+                        <th className="px-4 py-2">Actions</th> {/* Add this */}
+                    </tr>
                 </thead>
                 <tbody style={{ textAlign: 'center' }}>
-                {filteredAppointments.map(appointment => (
-                    <tr key={appointment.id}>
-                        <td className="border px-4 py-2">{appointment._id}</td>
-                        <td className="border px-4 py-2">{appointment.message}</td>
-                        <td className="border px-4 py-2">{appointment?.userid?.email}</td>
-                        <td className="border px-4 py-2">{new Date(appointment.date).toLocaleString()}</td>
-                        <td className="border px-4 py-2">{appointment.timeSlot}</td>
-                        <td className="border px-4 py-2">
-                            <button
-                                className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
-                                onClick={() => toggleStatus(appointment._id, appointment.status)}
-                            >
-                                {appointment.status}
-                            </button>
-                        </td>
-                        <td className="border px-4 py-2">
-                            <button
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                                onClick={() => handleDelete(appointment._id)}
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                ))}
+                    {filteredAppointments.map(appointment => (
+                        <tr key={appointment.id}>
+                            <td className="border px-4 py-2">{appointment._id}</td>
+                            <td className="border px-4 py-2">{appointment.message}</td>
+                            <td className="border px-4 py-2">{appointment?.userid?.email}</td>
+                            <td className="border px-4 py-2">{new Date(appointment.date).toLocaleString()}</td>
+                            <td className="border px-4 py-2">{appointment.timeSlot}</td>
+                            <td className="border px-4 py-2">
+                                <button
+                                    className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
+                                    onClick={() => toggleStatus(appointment._id, appointment.status)}
+                                >
+                                    {appointment.status}
+                                </button>
+                            </td>
+                            <td className="border px-4 py-2">
+                                <button
+                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                    onClick={() => handleDelete(appointment._id)}
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
-            </table>
-            <ToastContainer position="top-center"/>
+                </table>
+
+            <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={downloadPDF}
+            >
+                Download PDF
+            </button>
+            <ToastContainer position="top-center" />
         </div>
     );
 }

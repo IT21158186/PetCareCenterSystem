@@ -118,7 +118,7 @@ export default function TicketPage() {
                 <div>
                     <input
                         type="text"
-                        placeholder="Search by subject..."
+                        placeholder="Search by type..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
