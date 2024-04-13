@@ -157,55 +157,65 @@ export default function Appointments({ userId }) {
                 </div>
             )}
 
-            <table className="table-auto w-full mt-10">
-                <thead className="bg-pink-100">
-                    <tr>
-                        <th className="px-4 py-2">ID</th>
-                        <th className="px-4 py-2">Message</th>
-                        <th className="px-4 py-2">Appointment Type</th>
-                        <th className="px-4 py-2">UserID</th>
-                        <th className="px-4 py-2">Date</th>
-                        <th className="px-4 py-2">Time Slot</th>
-                        <th className="px-4 py-2">Status</th>
-                        <th className="px-4 py-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody style={{ textAlign: 'center' }}>
-                    {appointments?.map(appointment => (
-                        <tr key={appointment.id}>
-                            <td className="border px-4 py-2">{appointment?._id}</td>
-                            <td className="border px-4 py-2">{appointment?.message}</td>
-                            <td className="border px-4 py-2">{appointment?.type}</td>
-                            <td className="border px-4 py-2">{appointment?.userid?.email}</td>
-                            <td className="border px-4 py-2">{new Date(appointment?.date).toDateString()}</td>
-                            <td className="border px-4 py-2">{appointment?.timeSlot}</td>
-                            <td className="border px-4 py-2">
-                                <button
-                                    className={`px-2 py-1 rounded ${appointment.status === 'approved' ? 'bg-red-500 text-white' : appointment.status === 'cancelled' ? 'bg-amber-500 text-white' : 'bg-green-500 text-white'}`}
-                                    onClick={() => handleStatusClick(appointment._id, appointment.status)}
-                                    disabled={appointment.status === 'approved' || appointment.status === 'pending'}
-                                >
-                                    {appointment.status}
-                                </button>
-                            </td>
-                            <td className="border px-4 py-2 flex items-center gap-2">
-                                <button
-                                    className={`px-2 py-1 rounded bg-red-500 text-white'`}
-                                    onClick={() => handleStatusClick(appointment._id, 'cancelled')}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    className={`px-2 py-1 rounded border-red-500 border-2 text-white'`}
-                                    onClick={() => handleShowUpdate(appointment)}
-                                >
-                                    Edit
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+<div className="max-w-full overflow-x-auto">
+  <table className="table-auto w-full mt-10">
+    <thead className="bg-purple-100">
+      <tr>
+        <th className="px-4 py-2">ID</th>
+        <th className="px-4 py-2">Message</th>
+        <th className="px-4 py-2">Appointment Type</th>
+        <th className="px-4 py-2">UserID</th>
+        <th className="px-4 py-2">Date</th>
+        <th className="px-4 py-2">Time Slot</th>
+        <th className="px-4 py-2">Status</th>
+        <th className="px-4 py-2">Action</th>
+      </tr>
+    </thead>
+    <tbody className="text-center">
+      {appointments?.map(appointment => (
+        <tr key={appointment.id}>
+          <td className="border px-4 py-2">{appointment?._id}</td>
+          <td className="border px-4 py-2">{appointment?.message}</td>
+          <td className="border px-4 py-2">{appointment?.type}</td>
+          <td className="border px-4 py-2">{appointment?.userid?.email}</td>
+          <td className="border px-4 py-2">{new Date(appointment?.date).toDateString()}</td>
+          <td className="border px-4 py-2">{appointment?.timeSlot}</td>
+          <td className="border px-4 py-2">
+            <button
+              className={`px-2 py-1 rounded ${
+                appointment.status === 'approved'
+                  ? 'bg-red-500 text-white'
+                  : appointment.status === 'cancelled'
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-green-500 text-white'
+              }`}
+              onClick={() => handleStatusClick(appointment._id, appointment.status)}
+              disabled={appointment.status === 'approved' || appointment.status === 'pending'}
+            >
+              {appointment.status}
+            </button>
+          </td>
+          <td className="border px-4 py-2 inline-flex gap-2">
+            <button
+              className="px-2 py-1 rounded bg-red-500 text-white"
+              onClick={() => handleStatusClick(appointment._id, 'cancelled')}
+            >
+              Cancel
+            </button>
+            <button
+              className="px-2 py-1 rounded border-red-500 border-2 text-red-500"
+              onClick={() => handleShowUpdate(appointment)}
+            >
+              Edit
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
             {
                 showUpdate && <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white p-8 rounded-lg shadow-lg w-96">

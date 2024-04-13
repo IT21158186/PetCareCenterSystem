@@ -75,71 +75,60 @@ export default function AdminOrders() {
 
   return (
     <div className="bg-white p-8 rounded-md w-full">
-      <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-        <button onClick={() => toPDF()}>Download PDF</button>
-        <div ref={targetRef}>
-          <h1 className="text-center font-bold text-2xl my-5">All Orders</h1>
-          <table className="min-w-full leading-normal w-full" >
+      <div className="max-w-full overflow-x-auto">
+  <table className="min-w-full bg-white border-collapse shadow rounded-lg overflow-hidden">
+    <thead className="bg-blue-100">
+      <tr>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          #
+        </th>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Product
+        </th>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Amount
+        </th>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Shipping Address
+        </th>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Status
+        </th>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Created At
+        </th>
+        <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {transactions?.map((transaction, index) => (
+        <tr key={transaction._id} className="hover:bg-gray-100 transition duration-150 ease-in-out">
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index}</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {transaction?.productId?.title || 'Item No Longer Available'}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.amount}</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {transaction?.userid?.shippingAddress || 'Address No Longer Available'}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.status}</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {new Date(transaction.createdAt).toDateString()}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex items-center justify-between gap-3">
+            <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleUpdateDialogOpen(transaction)}>Update</button>
+            <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleDeleteDialogOpen(transaction)}>Delete</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
 
-            <thead>
 
-
-              <tr>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  #
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Product
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Amount
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Shipping Address
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Created At
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions?.map((transaction, index) => (
-                <tr key={transaction._id}>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {index}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {transaction?.productId?.title || 'Item No Longer Available'}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {transaction.amount}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {transaction?.userid?.shippingAddress || 'Address No Longer Available'}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {transaction.status}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {new Date(transaction.createdAt).toDateString()}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm flex items-center justify-between gap-3">
-                    <Button variant="outlined" color="primary" onClick={() => handleUpdateDialogOpen(transaction)}>Update</Button>
-                    <Button variant="outlined" color="secondary" onClick={() => handleDeleteDialogOpen(transaction)}>Delete</Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteModal} onClose={() => setDeleteModal(false)}>
         <DialogTitle>Delete Payment Details</DialogTitle>

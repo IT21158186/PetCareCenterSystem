@@ -39,47 +39,47 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
-      <div className='my-5 bg-white border rounded-xl p-5 flex items-center justify-between'>
-
-        <div className='w-max border shadow-xl p-5 rounded-xl'>
-          <p className='font-bold'>Pending Amount</p>
-          <hr />
-          <p className='px-0 pt-4'>{overview?.pendingAmount}</p>
+    <div className="bg-gray-100 min-h-screen p-">
+      <div className='my-5 bg-white border rounded-xl p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
+        <div className='border shadow-xl p-3 rounded-xl text-center'>
+          <p className='font-semibold text-base text-gray-700 mb-2'>Pending Amount</p>
+          <hr className="my-2" />
+          <p className='text-xl font-bold text-gray-900'>{overview?.pendingAmount}</p>
         </div>
-        <div className='w-max border shadow-xl p-5 rounded-xl'>
-          <p className='font-bold'>Total Sales</p>
-          <hr />
-          <p className='px-0 pt-4'>{overview?.totalSaleAmount}</p>
+        <div className='border shadow-xl p-3 rounded-xl text-center'>
+          <p className='font-semibold text-base text-gray-700 mb-2'>Total Sales</p>
+          <hr className="my-2" />
+          <p className='text-xl font-bold text-gray-900'>{overview?.totalSaleAmount}</p>
         </div>
-        <div className='w-max border shadow-xl p-5 rounded-xl'>
-          <p className='font-bold'>Approved Orders</p>
-          <hr />
-          <p className='px-0 pt-4'>{overview?.totalApprovedOrders}</p>
+        <div className='border shadow-xl p-3 rounded-xl text-center'>
+          <p className='font-semibold text-base text-gray-700 mb-2'>Approved Orders</p>
+          <hr className="my-2" />
+          <p className='text-xl font-bold text-gray-900'>{overview?.totalApprovedOrders}</p>
         </div>
-        <div className='w-max border shadow-xl p-5 rounded-xl'>
-          <p className='font-bold'>Pending Orders</p>
-          <hr />
-          <p className='px-0 pt-4'>{overview?.totalPendingOrders}</p>
+        <div className='border shadow-xl p-3 rounded-xl text-center'>
+          <p className='font-semibold text-base text-gray-700 mb-2'>Pending Orders</p>
+          <hr className="my-2" />
+          <p className='text-xl font-bold text-gray-900'>{overview?.totalPendingOrders}</p>
         </div>
-        <div className='w-max border shadow-xl p-5 rounded-xl'>
-          <p className='font-bold'>Rejected Orders</p>
-          <hr />
-          <p className='px-0 pt-4'>{overview?.totalRejectedOrders}</p>
+        <div className='border shadow-xl p-3 rounded-xl text-center'>
+          <p className='font-semibold text-base text-gray-700 mb-2'>Rejected Orders</p>
+          <hr className="my-2" />
+          <p className='text-xl font-bold text-gray-900'>{overview?.totalRejectedOrders}</p>
         </div>
-
-
       </div>
       <h1 className="text-3xl font-semibold mb-4 text-center">All Payment Methods of Customers</h1>
-      <Divider />
-
+      
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-center">Loading...</div>
       ) : (
         <PaymentTable cards={cards} />
       )}
     </div>
   );
+  
+  
+  
+  
 };
 
 export default Home;
