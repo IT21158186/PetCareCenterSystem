@@ -43,7 +43,7 @@ export default function AppointmentsScheduleHome() {
         const pdf = new jsPDF('p', 'pt', 'letter');
     
         // Define columns for the PDF table
-        const columns = ['ID', 'Message', 'UserID', 'Date', 'Time Slot', 'Status'];
+        const columns = ['ID', 'Message', 'Appointment Type', 'UserID', 'Date', 'Time Slot', 'Status'];
         const rows = [];
     
         // Extract data from appointments state
@@ -51,6 +51,7 @@ export default function AppointmentsScheduleHome() {
             const rowData = [
                 appointment._id,
                 appointment.message,
+                appointment.type,
                 appointment?.userid?.email,
                 new Date(appointment.date).toLocaleString(),
                 appointment.timeSlot,
@@ -92,6 +93,7 @@ export default function AppointmentsScheduleHome() {
             {
                 id: prevAppointments.length + 1,
                 message: event.target.message.value,
+                type: event.target.type.value,
                 userID: event.target.userID.value,
                 status: "pending",
                 date: event.target.date.value,
@@ -121,7 +123,7 @@ export default function AppointmentsScheduleHome() {
 
     // Function to filter appointments based on the search query
     const filteredAppointments = appointments.filter(appointment =>
-        appointment.message.toLowerCase().includes(searchQuery.toLowerCase())
+        appointment.type.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -134,7 +136,7 @@ export default function AppointmentsScheduleHome() {
                 </button> */}
                 <input
                     type="text"
-                    placeholder="Search by message..."
+                    placeholder="Search by Type..."
                     className="border border-gray-400 px-4 py-2 rounded"
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
@@ -146,6 +148,7 @@ export default function AppointmentsScheduleHome() {
                     <tr>
                         <th className="px-4 py-2">ID</th>
                         <th className="px-4 py-2">Message</th>
+                        <th className="px-4 py-2">Appointment Type</th>
                         <th className="px-4 py-2">UserID</th>
                         <th className="px-4 py-2">Date</th>
                         <th className="px-4 py-2">Time Slot</th>
@@ -158,6 +161,7 @@ export default function AppointmentsScheduleHome() {
                         <tr key={appointment.id}>
                             <td className="border px-4 py-2">{appointment._id}</td>
                             <td className="border px-4 py-2">{appointment.message}</td>
+                            <td className="border px-4 py-2">{appointment.type}</td>
                             <td className="border px-4 py-2">{appointment?.userid?.email}</td>
                             <td className="border px-4 py-2">{new Date(appointment.date).toLocaleString()}</td>
                             <td className="border px-4 py-2">{appointment.timeSlot}</td>
