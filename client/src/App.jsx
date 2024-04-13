@@ -19,6 +19,7 @@ import AppointmentsScheduleHome from './pages/scheduleManager/ScheduleHome';
 import Tickets from './pages/scheduleManager/Tickets';
 import AdminOrders from './pages/admin/Orders';
 import Overview from './pages/scheduleManager/Overview';
+import DoctorScheduler from './pages/customer/DoctorScheduler';
 
 
 export default function App() {
@@ -64,6 +65,7 @@ export default function App() {
             <Route path='transactions' element={<Orders />} />
             <Route path='ticket' element={<TicketPage />} />
             <Route path='appointment' element={<Appointments />} />
+            <Route path='docScheduler' element={<DoctorScheduler />} />
 
 
 

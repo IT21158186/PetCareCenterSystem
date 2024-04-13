@@ -76,6 +76,14 @@ export const customerListItems = (
       <ListItemText primary="Appointments" />
     </ListItemButton>
   </Link>
+  <Link to={'/docScheduler'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <BookOnlineIcon />
+      </ListItemIcon>
+      <ListItemText primary="Doctor Scheduler" />
+    </ListItemButton>
+  </Link>
   
   </React.Fragment>
 );

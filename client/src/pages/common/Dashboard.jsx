@@ -272,7 +272,7 @@ export default function Dashboard() {
           </Menu>
         </AppBar>
 
-        <Drawer variant="permanent" open={open} sx={{ bgcolor: '#073068' }}>
+        <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
               display: 'flex',
