@@ -38,6 +38,18 @@ export default function AppointmentsScheduleHome() {
     };
 
 
+    const handleCancel = async (id) => {
+        console.log("Deleting appointment with ID:", id);
+        try {
+            await axios.put(`${apiUrl}/appointment/${id}`,{status:'cancelled'});
+            toast.success('Appointment Cancelled');
+            myApps();
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to delete appointment');
+        }
+    };
+
     const downloadPDF = () => {
         // Create jsPDF instance
         const pdf = new jsPDF('p', 'pt', 'letter');
@@ -173,12 +185,18 @@ export default function AppointmentsScheduleHome() {
                                     {appointment.status}
                                 </button>
                             </td>
-                            <td className="border px-4 py-2">
+                            <td className="border px-4 py-2 flex items-center gap-3">
                                 <button
                                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
                                     onClick={() => handleDelete(appointment._id)}
                                 >
                                     Delete
+                                </button>
+                                <button
+                                    className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-1 px-2 rounded"
+                                    onClick={() => handleCancel(appointment._id)}
+                                >
+                                    Cancel
                                 </button>
                             </td>
                         </tr>
