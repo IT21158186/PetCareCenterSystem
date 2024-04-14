@@ -5,6 +5,11 @@ import { apiUrl } from "../../utils/Constants";
 export default function DoctorScheduler() {
     // Dummy data for appointments (you can replace it with your actual data)
     const [appointments, setAppointments] = useState();
+    const doctor = {
+        name:'Yapa Dissanayake',
+        image:'https://www.shutterstock.com/image-vector/vector-medical-icon-doctor-image-600nw-1170228883.jpg',
+        timing:'9.00AM - 5.00PM'
+    }
     // const appointments = [
     //     { day: "Monday", time: "9:00am - 9:30am", status: "Booked" },
     //     { day: "Tuesday", time: "9:00am - 9:30am", status: "Booked" },
@@ -49,6 +54,13 @@ export default function DoctorScheduler() {
         <div className="flex items-center flex-col justify-center w-full">
             <div>
                 {new Date(appointments?.dateFrom).toDateString()} -   {new Date(appointments?.dateTo).toDateString()}
+            </div>
+            <div className="flex items-start ml-auto">
+                <img src={doctor.image} className="w-32 h-32 rounded-full" alt="" srcset="" />
+                <div className="p-5">
+                    <h2 className="text-xl font-bold">{doctor.name}</h2>
+                    <p>{doctor.timing}</p>
+                </div>
             </div>
             <div className="p-4">
                 <h1 className="text-3xl font-bold mb-4 text-center">Doctor Scheduler</h1>
