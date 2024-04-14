@@ -109,6 +109,14 @@ const CreateSchedule = () => {
         }
     })
 
+    const timeSlots = [
+        "9:00am - 9:30am",
+        "9:30am - 10:00am",
+        "4:00pm - 4:30pm",
+        "4:30pm - 5:00pm",
+        // Add more time slots here
+    ];
+
     const getAllSchedule = async () => {
         try {
             const resp = await axios.get(`${apiUrl}/schedules`)
@@ -181,13 +189,26 @@ const CreateSchedule = () => {
                 showForm && <div className='bg-white p-5 -translate-x-1/2 absolute top-1/2 left-1/2 shadow-xl'>
                     <div className='flex gap-5 items-center'>
                         <h2>Start Date</h2>
-                        <input type="date" name="dateFrom" id="" onChange={handleChange}/>
+                        <input type="date" name="dateFrom" id="" onChange={handleChange} />
                     </div>
 
                     <div className='flex gap-5 items-center'>
                         <h2>End Date</h2>
-                        <input type="date" name="dateTo" id="" onChange={handleChange}/>
+                        <input type="date" name="dateTo" id="" onChange={handleChange} />
                     </div>
+                    <div className='flex items-center justify-between'>
+                        {
+                            Object.keys(createSc?.appointments).map((slotKey, index) => (
+                                <div>
+                                    <div className="text-center col-span-1 border p-2">{timeSlots[index]}</div>
+                                    {createSc?.appointments[slotKey].map(appointment => (
+                                        <div className="text-center col-span-1 border p-2">{appointment.status}</div>
+                                    ))}
+                                </div>
+                            ))
+                        }
+                    </div>
+
 
                     <div className='flex gap-5 items-center justify-between mt-10'>
                         <button className='px-4 py-2 bg-green-200' onClick={createSchedule}>Submit</button>
