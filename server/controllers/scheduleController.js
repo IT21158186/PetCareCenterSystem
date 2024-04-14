@@ -39,6 +39,7 @@ export const getScheduleById = async (req, res) => {
 export const getScheduleThisWeek = async (req, res) => {
     try {
         const today = new Date();
+        today.setHours(23,59,59,900)
         const startDay = new Date();
         startDay.setHours(0, 1, 0, 0); // Set start of the day time
 
