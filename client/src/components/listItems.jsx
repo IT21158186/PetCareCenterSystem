@@ -125,6 +125,15 @@ export const scheduleManagerListItems = (
       <ListItemText primary="Overview" />
     </ListItemButton>
   </Link>
+
+  <Link to={'/schedule'}>
+    <ListItemButton>
+      <ListItemIcon>
+        <ChatIcon />
+      </ListItemIcon>
+      <ListItemText primary="Schedule" />
+    </ListItemButton>
+  </Link>
   
   </React.Fragment>
 );

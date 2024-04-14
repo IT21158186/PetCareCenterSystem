@@ -47,7 +47,7 @@ export default function DoctorScheduler() {
 
     return (
         <div className="flex items-center flex-col justify-center w-full">
-            <div> 
+            <div>
                 {new Date(appointments?.dateFrom).toDateString()} -   {new Date(appointments?.dateTo).toDateString()}
             </div>
             <div className="p-4">
@@ -77,7 +77,7 @@ export default function DoctorScheduler() {
 
                         </React.Fragment>
                     ))} */}
-                    {appointments?.appointments && Object.keys(appointments?.appointments).map((slotKey, index) => (
+                    {appointments?.appointments ? Object.keys(appointments?.appointments).map((slotKey, index) => (
                         <>
                             {index == 2 && <div className="py-2 bg-amber-300 col-span-8 text-center">Lunch Time</div>}
                             <div className="text-center col-span-1 border p-2">{timeSlots[index]}</div>
@@ -85,7 +85,10 @@ export default function DoctorScheduler() {
                                 <div className="text-center col-span-1 border p-2">{appointment.status}</div>
                             ))}
                         </>
-                    ))}
+                    ))
+                        :
+                        <h1 className="text-center col-span-8">There s no any schedule for this week</h1>
+                    }
                 </div>
             </div>
         </div>
