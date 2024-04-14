@@ -46,7 +46,10 @@ export default function DoctorScheduler() {
     }, [])
 
     return (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center flex-col justify-center w-full">
+            <div> 
+                {new Date(appointments?.dateFrom).toDateString()} -   {new Date(appointments?.dateTo).toDateString()}
+            </div>
             <div className="p-4">
                 <h1 className="text-3xl font-bold mb-4 text-center">Doctor Scheduler</h1>
                 <div className="grid grid-cols-8 gap-2">
