@@ -8,6 +8,7 @@ import payRouter from './routes/paymentRoutes.js';
 import itemRouter from './routes/itemRouter.js';
 import appRoutes from './routes/appRoutes.js';
 import ticketRouter from './routes/ticketRoutes.js';
+import schRoutes from './routes/scheduleRoutes.js';
 dotenv.config();
 const PORT = process.env.PORT || 3000
 const app = express();
@@ -24,6 +25,7 @@ app.use('/card', payRouter)
 app.use('/item', itemRouter)
 app.use('/appointment', appRoutes)
 app.use('/ticket', ticketRouter)
+app.use('/schedules', schRoutes)
 
 dbConfig();
 
