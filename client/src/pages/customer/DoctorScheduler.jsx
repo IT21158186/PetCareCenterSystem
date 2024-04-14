@@ -76,10 +76,11 @@ export default function DoctorScheduler() {
                     ))} */}
                     {appointments?.appointments && Object.keys(appointments?.appointments).map((slotKey, index) => (
                         <>
+                            {index == 2 && <div className="py-2 bg-amber-300 col-span-8 text-center">Lunch Time</div>}
                             <div className="text-center col-span-1 border p-2">{timeSlots[index]}</div>
                             {appointments?.appointments[slotKey].map(appointment => (
-                                 <div className="text-center col-span-1 border p-2">{appointment.status}</div>
-                                ))}
+                                <div className="text-center col-span-1 border p-2">{appointment.status}</div>
+                            ))}
                         </>
                     ))}
                 </div>
