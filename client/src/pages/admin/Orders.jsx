@@ -114,7 +114,7 @@ export default function AdminOrders() {
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.amount}</td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-            {transaction?.userid?.shippingAddress || 'Address No Longer Available'}
+            {transaction?.shipAddress || transaction?.userid.shippingAddress || 'Address No Longer Available'}
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.status}</td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
