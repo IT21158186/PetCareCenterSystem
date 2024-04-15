@@ -37,7 +37,7 @@ export const getOneitem = async (req, res) => {
 
 export const buyItem = async (req, res) => {
     try {
-        const { cardId, userid, products } = req.body;
+        const { cardId, userid, products,shipAddress } = req.body;
 
         const card = await CardModel.findById(cardId);
         if (!card) {
@@ -56,7 +56,7 @@ export const buyItem = async (req, res) => {
             card.balance -= amount;
             await card.save();
 
-            const tsc = await TransactionModel.create({ cardId, productId : _id,qty,amount, userid });
+            const tsc = await TransactionModel.create({ cardId, productId : _id,qty,amount, userid,shipAddress });
             console.log(`Transaction created for product ${_id}`);
         }
 

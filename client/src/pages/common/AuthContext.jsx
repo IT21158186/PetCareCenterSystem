@@ -95,10 +95,13 @@ export const AuthProvider = ({ children }) => {
   
     console.log(updatedCart);
   };
+  const clearCart = ()=>{
+    setCart([])
+  }
   
 
   return (
-    <AuthContext.Provider value={{ userRole, login, logout, userToken, addItemToCart, removeItemFromCart, cart, addQty,removeQty }}>
+    <AuthContext.Provider value={{ userRole, login, logout, userToken, addItemToCart, removeItemFromCart, cart, addQty,removeQty,clearCart }}>
       {children}
     </AuthContext.Provider>
   );

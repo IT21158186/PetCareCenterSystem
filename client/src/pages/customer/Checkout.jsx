@@ -4,11 +4,14 @@ import { apiUrl } from '../../utils/Constants';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useAuth } from '../common/AuthContext';
 
 
 export default function Checkout() {
   const [selectedCurrency, setSelectedCurrency] = useState('LKR');
   const [amount, setAmount] = useState(0)
+  const [shipAddress, setShip] = useState('');
+  const {clearCart} = useAuth()
   const [card, setCard] = useState({
     name: "",
   });
@@ -16,7 +19,7 @@ export default function Checkout() {
   const [buttonText, setBtnText] = useState('Save Card')
   const [price, setPrice] = useState(0.0);
   const navigate = useNavigate()
-  const [rates, setRates] = useState({ lkr: 1});
+  const [rates, setRates] = useState({ lkr: 1 });
   const [targetCurrency, setTargetCurrency] = useState('lkr');
   const cart = location.state
 
@@ -79,11 +82,18 @@ export default function Checkout() {
         const data = {
           cardId: card?._id,
           amount: total,
-          products:cart
+          products: cart,
+          shipAddress
+        }
+        if(!shipAddress){
+          toast.error('Shipping Address is required')
+          return
         }
         console.log(data);
         const resp = await authAxios.put(`${apiUrl}/item/buy`, data);
         toast.success('Order is placed')
+        clearCart()
+        navigate('/')
       } else {
         console.log(card);
         const resp = await authAxios.post(`${apiUrl}/card/save`, card);
@@ -108,9 +118,9 @@ export default function Checkout() {
     console.log(card);
   }
 
-  const rechargeCard =async ()=>{
+  const rechargeCard = async () => {
     try {
-      const resp = await axios.put(`${apiUrl}/card/${card._id}`,{balance:amount})
+      const resp = await axios.put(`${apiUrl}/card/${card._id}`, { balance: amount })
       toast.success(`Balance Changed to ${amount}`)
     } catch (error) {
       console.log(error);
@@ -123,6 +133,9 @@ export default function Checkout() {
           <div className="mx-auto w-full max-w-lg">
             <h1 className="relative text-2xl font-medium text-gray-700 sm:text-3xl">Checkout<span className="mt-2 block h-1 w-10 bg-teal-600 sm:w-20"></span></h1>
             <form action="" className="mt-10 flex flex-col space-y-4">
+              <div><label htmlFor="email" className="text-xs font-semibold text-gray-500">Shipping Address</label>
+                <input type="text" required id="shipAddress" name="shipAddress" placeholder="Shipping Address" onChange={e => setShip(e.target.value)} value={shipAddress} className="mt-1 block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500" />
+              </div>
               <div><label htmlFor="email" className="text-xs font-semibold text-gray-500">Email</label>
                 <input type="email" id="email" name="email" placeholder="john.capler@fang.com" onChange={updateCardDetails} value={card?.email} className="mt-1 block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500" />
               </div>
@@ -211,9 +224,14 @@ export default function Checkout() {
             <button type="button" onClick={placeOrder} className="mt-4 inline-flex w-full items-center justify-center rounded bg-blue-500 py-2.5 px-4 text-base font-semibold tracking-wide text-white text-opacity-80 outline-none ring-offset-2 transition hover:text-opacity-100 focus:ring-2 focus:ring-teal-500 sm:text-lg">
               {buttonText}
             </button>
+            <div className='mt-10'>
+              <span className='text-xs'>this will change the card balance to a given amount if card balance is insufficiant for a specific order, this is for testing purpose only</span>
+              <div className='flex items-center justify-between'>
+                <input type="number" className='p-2 border ' value={amount} onChange={e => setAmount(e.target.value)} />
+                <button className='my-10 p-2 bg-green-200' type='button' onClick={rechargeCard}>Recharge Card</button>
+              </div>
 
-              <input type="number"value={amount} onChange={e=>setAmount(e.target.value)}/>
-              <button className='my-10 p-2 bg-green-200' type='button' onClick={rechargeCard}>Recharge Card</button>
+            </div>
           </div>
         </div>
         <div className="relative col-span-full flex flex-col py-6 pl-8 pr-4 sm:py-12 lg:col-span-4 lg:py-24 bg-blue-300">

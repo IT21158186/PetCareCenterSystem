@@ -16,6 +16,7 @@ var transactionSchema = new mongoose.Schema({
         min:1,
 
     },
+    shipAddress:String,
     productId:{
         type: mongoose.SchemaTypes.ObjectId,
         required: true,
