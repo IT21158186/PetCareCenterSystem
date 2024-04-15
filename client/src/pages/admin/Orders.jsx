@@ -77,7 +77,7 @@ export default function AdminOrders() {
   };
 
   return (
-    <div className="bg-white p-8 rounded-md w-full">
+    <div className="bg-white rounded-md w-full">
       <div className="max-w-full overflow-x-auto">
   <table className="min-w-full bg-white border-collapse shadow rounded-lg overflow-hidden">
     <thead className="bg-blue-100">
