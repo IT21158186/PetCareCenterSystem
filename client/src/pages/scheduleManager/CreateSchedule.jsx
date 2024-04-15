@@ -147,6 +147,18 @@ const CreateSchedule = () => {
             [e.target.name]: e.target.value
         }))
     }
+// Function to update status of a slot
+const updateSlotStatus = (slot, index) => {
+    setData(prevState => ({
+        ...prevState,
+        appointments: {
+            ...prevState.appointments,
+            [slot]: prevState.appointments[slot].map((item, i) =>
+                i === index ? { ...item, status: item.status === 'available' ? 'booked' : 'available' } : item
+            )
+        }
+    }));
+};
     return (
         <div className='relative'>
             <button onClick={() => setShowForm(true)} className='px-4 py-2 bg-green-200'> CreateSchedule</button>
@@ -201,8 +213,8 @@ const CreateSchedule = () => {
                             Object.keys(createSc?.appointments).map((slotKey, index) => (
                                 <div>
                                     <div className="text-center col-span-1 border p-2">{timeSlots[index]}</div>
-                                    {createSc?.appointments[slotKey].map(appointment => (
-                                        <div className="text-center col-span-1 border p-2">{appointment.status}</div>
+                                    {createSc?.appointments[slotKey].map((appointment,j) => (
+                                        <button onClick={()=>updateSlotStatus(slotKey,j)} className={`text-center w-full col-span-1 border p-2 ${appointment.status =='available' ? 'bg-green-100 hover:bg-green-400' : 'bg-red-100 hover:bg-red-400'}`}>{appointment.status}</button>
                                     ))}
                                 </div>
                             ))

@@ -94,7 +94,7 @@ export default function DoctorScheduler() {
                             {index == 2 && <div className="py-2 bg-amber-300 col-span-8 text-center">Lunch Time</div>}
                             <div className="text-center col-span-1 border p-2">{timeSlots[index]}</div>
                             {appointments?.appointments[slotKey].map(appointment => (
-                                <div className="text-center col-span-1 border p-2">{appointment.status}</div>
+                                <button className={`text-center w-full col-span-1 border p-2 ${appointment.status =='available' ? 'bg-green-100 hover:bg-green-400' : 'bg-red-100 hover:bg-red-400'}`}>{appointment.status}</button>
                             ))}
                         </>
                     ))
